@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package rip_smntitf;
+message HelloItf_Hello_Prm {
+	string p0 = 1;
+}
+message HelloItf_Hello_Ret {
+	string p0 = 1;
+}
+

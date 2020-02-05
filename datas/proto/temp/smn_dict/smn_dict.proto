@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package smn_dict;
+
+enum EDict{
+	None = 0;
+	rip_smntitf_HelloItf_Hello_Prm = 1;
+	rip_smntitf_HelloItf_Hello_Ret = 2;
+}
+
