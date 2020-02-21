@@ -10,3 +10,8 @@ clean:
 	rm -rf ./rpc_nitf
 	rm -f ./datas/proto/rip_*.proto ./datas/proto/smn_dict.proto
 	rm -rf ./pb
+
+import:
+	go get -u github.com/ProtossGenius/SureMoonNet
+	cd $(GOPATH)/src/github.com/ProtossGenius/SureMoonNet && make install
+
