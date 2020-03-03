@@ -1,5 +1,5 @@
 
-test: clean
+test: nothing
 	smn_itf2proto -i "./smnitf" -o ./datas/proto
 	smn_protocpl -i ./datas/proto/  -o "./pb/" -ep "github.com/ProtossGenius/smntools"
 	smn_pr_go -proto "./datas/proto/" -pkgh "pb/" -o "./pbr/read.go" -gopath=$(GOPATH)/src -ext="/github.com/ProtossGenius/smntools"
@@ -12,6 +12,8 @@ clean:
 	rm -rf ./pb
 
 import:
+	go get -u github.com/json-iterator/go
 	go get -u github.com/ProtossGenius/SureMoonNet
 	cd $(GOPATH)/src/github.com/ProtossGenius/SureMoonNet && make install
 
+nothing:
