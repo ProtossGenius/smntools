@@ -11,6 +11,12 @@ clean:
 	rm -f ./datas/proto/rip_*.proto ./datas/proto/smn_dict.proto
 	rm -rf ./pb
 
+c_smgoget:
+	cd ./cmd/smgoget/ && go install
+
+install: c_smgoget
+
+
 import:
 	go get -u github.com/json-iterator/go
 	go get -u github.com/ProtossGenius/SureMoonNet
