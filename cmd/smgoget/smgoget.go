@@ -15,7 +15,8 @@ import (
 )
 
 var (
-	GOPATH string
+	SmCfgPath string
+	GOPATH    string
 )
 
 var LinkMap = map[string]string{}
@@ -28,9 +29,19 @@ func check(err error) {
 }
 
 func readCfg() {
-	cfgFilePath := smcfg.GetCfgPath() + "smgoget/links.map"
+	cfgFilePath := SmCfgPath + "/smgoget/links.map"
+	fmt.Println(cfgFilePath)
 	if !smn_file.IsFileExist(cfgFilePath) {
-		return
+		check(os.MkdirAll(SmCfgPath+"/smgoget/", os.ModePerm))
+		f, err := smn_file.CreateNewFile(cfgFilePath)
+		check(err)
+		_, err = f.WriteString(`{"golang.org/x":"github.com/golang"}`)
+		check(err)
+		err = f.Close()
+		check(err)
+		fmt.Println(`not found config file, now create cfg file, file path is `, cfgFilePath, `; it's defaut value is `, `
+		{"golang.org/x":"github.com/golang"}
+		`)
 	}
 	cfg, err := smn_file.FileReadAll(cfgFilePath)
 	check(err)
@@ -168,9 +179,14 @@ func dealGoPath() {
 }
 
 func main() {
+	var err error
+	SmCfgPath, err = smcfg.GetCfgPath()
+	fmt.Println(SmCfgPath)
+	check(err)
+	flag.StringVar(&SmCfgPath, "sp", SmCfgPath, `smcfg path, config file's path is "*sp/smgoget/links.map" `)
+	flag.Parse()
 	readCfg()
 	dealGoPath()
-	flag.Parse()
 	args := flag.Args()
 	PkgToImport = make(map[string]bool, len(args))
 	for _, arg := range args {

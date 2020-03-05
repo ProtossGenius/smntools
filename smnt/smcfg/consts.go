@@ -1,20 +1,13 @@
 package smcfg
 
-import "runtime"
-
-func init() {
-	switch runtime.GOOS {
-	case "windows":
-		cfgPath = "C:/.smcfg/"
-	default:
-		cfgPath = "~/.smcfg/"
-	}
-}
-
-var (
-	cfgPath string
+import (
+	"os/user"
 )
 
-func GetCfgPath() string {
-	return cfgPath
+func GetCfgPath() (string, error) {
+	user, err := user.Current()
+	if err == nil {
+		return user.HomeDir + "/.smcfg/", nil
+	}
+	return "", err
 }
