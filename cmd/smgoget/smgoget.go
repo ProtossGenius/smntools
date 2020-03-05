@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
+	"unicode"
 
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_data"
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
@@ -17,10 +18,12 @@ import (
 var (
 	SmCfgPath string
 	GOPATH    string
+	GOROOT    string
 )
 
 var LinkMap = map[string]string{}
 var PkgToImport = map[string]bool{}
+var FailList = []string
 
 func check(err error) {
 	if err != nil {
@@ -30,7 +33,6 @@ func check(err error) {
 
 func readCfg() {
 	cfgFilePath := SmCfgPath + "/smgoget/links.map"
-	fmt.Println(cfgFilePath)
 	if !smn_file.IsFileExist(cfgFilePath) {
 		check(os.MkdirAll(SmCfgPath+"/smgoget/", os.ModePerm))
 		f, err := smn_file.CreateNewFile(cfgFilePath)
@@ -50,9 +52,25 @@ func readCfg() {
 }
 
 func IsPkgExist(pkg string) bool {
-	pkgList := strings.Split(pkg, "/")
-	if len(pkgList) > 3 {
+	if pkg == "C" {
 		return true
+	}
+	//in GOROOT
+	if smn_file.IsFileExist(GOROOT + "src/" + pkg) {
+		return true
+	}
+	//in GOPATH
+	pkgList := strings.Split(pkg, "/")
+	firstChar := []rune(pkg)[0]
+	//if not from https
+	if !unicode.IsDigit(firstChar) && !unicode.IsLetter(firstChar) && !strings.Contains(pkgList[0], ".") {
+		return true
+	}
+	if len(pkgList) < 3 {
+		return true
+	}
+	if len(pkgList) > 3 {
+		return smn_file.IsFileExist(GOPATH + "src/" + pkg)
 	}
 	ownerPath := fmt.Sprintf("%ssrc/%s/%s/", GOPATH, pkgList[0], pkgList[1])
 	responsePath := fmt.Sprintf("%s/%s", ownerPath, pkgList[2])
@@ -63,15 +81,19 @@ func analysisGoLine(line string, inImport bool) (isImport, mutiImport bool, pkgN
 	if strings.HasPrefix(line, ")") {
 		return false, false, ""
 	}
-	if strings.Index(line, "\"") == -1 {
-		return false, inImport, ""
-	}
-	if inImport || strings.HasPrefix(line, "import") {
-		pkgName = line[strings.Index(line, "\""):]
-		if strings.Index(line, "\"") == -1 {
-			return false, inImport, ""
+	if inImport || strings.HasPrefix(line, "import ") || strings.HasPrefix(line, "import(") {
+		mutiImport = inImport
+		if strings.Contains(line, "(") {
+			mutiImport = true
 		}
-		pkgName = line[:strings.Index(line, "")]
+		if strings.Index(line, "\"") == -1 {
+			return false, mutiImport, ""
+		}
+		pkgName = line[strings.Index(line, "\"")+1:]
+		if strings.Index(pkgName, "\"") == -1 {
+			return false, mutiImport, ""
+		}
+		pkgName = pkgName[:strings.Index(pkgName, "\"")]
 		isImport = true
 	}
 	if strings.Contains(line, ")") {
@@ -80,9 +102,9 @@ func analysisGoLine(line string, inImport bool) (isImport, mutiImport bool, pkgN
 	return
 }
 
-func analysis(path string) {
-	smn_file.DeepTraversalDir(path, func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
-		if info.IsDir() || strings.HasSuffix(info.Name(), ".go") {
+func analysis(responsePath string) {
+	smn_file.DeepTraversalDir(responsePath, func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
+		if info.IsDir() || !strings.HasSuffix(info.Name(), ".go") {
 			return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
 		}
 		data, err := smn_file.FileReadAll(path)
@@ -160,8 +182,10 @@ func doGoGet() {
 
 func dealGoPath() {
 	GOPATH = os.Getenv("GOPATH")
-	if GOPATH == "" {
-		panic(fmt.Errorf("please install go or confg GOPATH(%s) ", GOPATH))
+	GOROOT = os.Getenv("GOROOT")
+
+	if GOPATH == "" || GOROOT == "" {
+		panic(fmt.Errorf("please install go or confg GOPATH(%s)  GOROOT(%s) ", GOPATH, GOROOT))
 	}
 	//gopath clean, gopath maybe have lots of dir
 	switch runtime.GOOS {
@@ -169,19 +193,22 @@ func dealGoPath() {
 		GOPATH = strings.TrimSpace(strings.Split(GOPATH, ";")[0])
 		//let windows's '\' seq to '/'
 		GOPATH = smn_str.PathFmt(GOPATH)
-		//another split type.
+		//another split type..
 	default:
 		GOPATH = strings.TrimSpace(strings.Split(GOPATH, ":")[0])
 	}
+	GOROOT = smn_str.PathFmt(GOROOT)
 	if !strings.HasSuffix(GOPATH, "/") {
 		GOPATH += "/"
+	}
+	if !strings.HasSuffix(GOROOT, "/") {
+		GOROOT += "/"
 	}
 }
 
 func main() {
 	var err error
 	SmCfgPath, err = smcfg.GetCfgPath()
-	fmt.Println(SmCfgPath)
 	check(err)
 	flag.StringVar(&SmCfgPath, "sp", SmCfgPath, `smcfg path, config file's path is "*sp/smgoget/links.map" `)
 	flag.Parse()
@@ -190,7 +217,6 @@ func main() {
 	args := flag.Args()
 	PkgToImport = make(map[string]bool, len(args))
 	for _, arg := range args {
-		fmt.Println(arg)
 		PkgToImport[arg] = true
 	}
 	doGoGet()
