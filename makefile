@@ -8,7 +8,7 @@ clean:
 	rm -rf ./pbr
 	rm -rf ./rpc_nitf
 	rm -f ./datas/proto/rip_*.proto ./datas/proto/smn_dict.proto
-	rm -rf ./datas/temp
+	rm -rf ./datas/proto/temp
 	rm -rf ./pb
 
 c_smgoget:
