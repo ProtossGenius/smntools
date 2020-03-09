@@ -4,10 +4,17 @@ import (
 	"os/user"
 )
 
-func GetCfgPath() (string, error) {
+func GetUserHome() string {
 	user, err := user.Current()
 	if err == nil {
-		return user.HomeDir + "/.smcfg/", nil
+		return user.HomeDir
 	}
-	return "", err
+	return "/"
+
+}
+
+var userHome = GetUserHome()
+
+func GetCfgPath() string {
+	return userHome + ".smcfg/"
 }
