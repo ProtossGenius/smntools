@@ -20,5 +20,5 @@ c_smcfg:
 	cd ./cmd/smcfg && go install 
 
 qrun: c_smcfg
-	smcfg "github.com"
+	smcfg -get "git@github.com:ProtossGenius/smcfgs.git"
 

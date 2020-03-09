@@ -44,11 +44,12 @@ func GetFromGit(sf *smn_flag.SmnFlag, args []string) error {
 	}
 	fmt.Println("cloning path ...", git_path)
 	//clone from git_path
-	cmd := exec.Command("git", "clone", git_path)
+	cmd := exec.Command("git", "clone", git_path, ".vimrc")
 	cmd.Dir = smcfg.GetUserHome()
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
+
 }
 
 func main() {
@@ -57,5 +58,5 @@ func main() {
 	flag.BoolVar(&force, "f", force, "force excute. ")
 	smFlag.RegisterString("get", &git_path, GetFromGit)
 	flag.Parse()
-	smFlag.Parse(flag.Args())
+	smFlag.Parse(flag.Args(), onErr)
 }
