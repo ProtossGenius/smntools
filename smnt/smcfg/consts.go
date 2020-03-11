@@ -9,12 +9,12 @@ func GetUserHome() string {
 	if err == nil {
 		return user.HomeDir
 	}
-	return "/"
+	return ""
 
 }
 
 var userHome = GetUserHome()
 
 func GetCfgPath() string {
-	return userHome + ".smcfg/"
+	return userHome + "/.smcfg/"
 }
