@@ -23,7 +23,7 @@ var (
 
 var LinkMap = map[string]string{}
 var PkgToImport = map[string]bool{}
-var FailList = []string
+var FailList = []string{}
 
 func check(err error) {
 	if err != nil {
@@ -207,9 +207,7 @@ func dealGoPath() {
 }
 
 func main() {
-	var err error
-	SmCfgPath, err = smcfg.GetCfgPath()
-	check(err)
+	SmCfgPath = smcfg.GetCfgPath()
 	flag.StringVar(&SmCfgPath, "sp", SmCfgPath, `smcfg path, config file's path is "*sp/smgoget/links.map" `)
 	flag.Parse()
 	readCfg()
