@@ -20,6 +20,7 @@ var (
 	update      string
 	remove      string
 	check       string
+	collect     string
 	pull        bool
 	update_all  bool
 	install_all bool
@@ -104,6 +105,14 @@ func SmCfgUpdate(sf *smn_flag.SmnFlag, args []string) error {
 	}
 	return dirCmd(cfgPath+update, "sh", "update.sh")
 }
+
+func SmCfgCollect(sf *smn_flag.SmnFlag, args []string) error {
+	if update == "" {
+		return errors.New(ErrNothingCanUpdate)
+	}
+	return dirCmd(cfgPath+update, "sh", "collect.sh")
+}
+
 func SmCfgPull(sf *smn_flag.SmnFlag, args []string) error {
 	return dirCmd(cfgPath, "git", "pull")
 }
@@ -117,6 +126,7 @@ func main() {
 	smFlag.RegisterString("remove", &remove, "do remvoe", SmCfgRemove)
 	smFlag.RegisterString("update", &update, "do update", SmCfgUpdate)
 	smFlag.RegisterString("check", &check, "do check, is exist success", SmCfgCheck)
+	smFlag.RegisterString("collect", &collect, "collect local config to update remote.", SmCfgCollect)
 	smFlag.RegisterBool("pull", &pull, "update the smcfg response", SmCfgPull)
 	flag.Parse()
 	smFlag.Parse(flag.Args(), onErr)
