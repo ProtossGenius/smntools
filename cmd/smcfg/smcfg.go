@@ -52,7 +52,7 @@ func dirCmd(dir, e string, args ...string) error {
 
 }
 
-func GetFromGit(sf *smn_flag.SmnFlag, args []string) error {
+func GetFromGit(args []string) error {
 	//init config path
 	if smn_file.IsFileExist(cfgPath) {
 		fmt.Println("config path exist : ", cfgPath)
@@ -73,7 +73,7 @@ func GetFromGit(sf *smn_flag.SmnFlag, args []string) error {
 	return dirCmd(homePath, "git", "clone", git_path, ".smcfg")
 }
 
-func SmCfgInstall(sf *smn_flag.SmnFlag, args []string) error {
+func SmCfgInstall(args []string) error {
 	//rely install
 	err := dirCmd(cfgPath+install, "sh", "rely.sh")
 	if err != nil {
@@ -82,7 +82,7 @@ func SmCfgInstall(sf *smn_flag.SmnFlag, args []string) error {
 	return dirCmd(cfgPath+install, "sh", "install.sh")
 }
 
-func SmCfgCheck(sf *smn_flag.SmnFlag, args []string) error {
+func SmCfgCheck(args []string) error {
 	if check == "" {
 		if install == "" {
 			return errors.New(ErrNoCheckTarget)
@@ -92,42 +92,41 @@ func SmCfgCheck(sf *smn_flag.SmnFlag, args []string) error {
 	return dirCmd(cfgPath+check, "sh", "check.sh")
 }
 
-func SmCfgRemove(sf *smn_flag.SmnFlag, args []string) error {
+func SmCfgRemove(args []string) error {
 	if remove == "" {
 		return errors.New(ErrNothingCanRemove)
 	}
 	return dirCmd(cfgPath+remove, "sh", "remove.sh")
 }
 
-func SmCfgUpdate(sf *smn_flag.SmnFlag, args []string) error {
+func SmCfgUpdate(args []string) error {
 	if update == "" {
 		return errors.New(ErrNothingCanUpdate)
 	}
 	return dirCmd(cfgPath+update, "sh", "update.sh")
 }
 
-func SmCfgCollect(sf *smn_flag.SmnFlag, args []string) error {
+func SmCfgCollect(args []string) error {
 	if update == "" {
 		return errors.New(ErrNothingCanUpdate)
 	}
 	return dirCmd(cfgPath+update, "sh", "collect.sh")
 }
 
-func SmCfgPull(sf *smn_flag.SmnFlag, args []string) error {
+func SmCfgPull(args []string) error {
 	return dirCmd(cfgPath, "git", "pull")
 }
 func main() {
-	smFlag := smn_flag.NewSmnFlag()
 	flag.BoolVar(&force, "f", force, "force excute. ")
-	smFlag.RegisterString("get", &git_path,
+	smn_flag.RegisterString("get", &git_path,
 		fmt.Sprintf("git path and install it to path[%s],   -f means delete old CfgPath ", smcfg.GetCfgPath()),
 		GetFromGit)
-	smFlag.RegisterString("install", &install, "do install", SmCfgInstall)
-	smFlag.RegisterString("remove", &remove, "do remvoe", SmCfgRemove)
-	smFlag.RegisterString("update", &update, "do update", SmCfgUpdate)
-	smFlag.RegisterString("check", &check, "do check, is exist success", SmCfgCheck)
-	smFlag.RegisterString("collect", &collect, "collect local config to update remote.", SmCfgCollect)
-	smFlag.RegisterBool("pull", &pull, "update the smcfg response", SmCfgPull)
+	smn_flag.RegisterString("install", &install, "do install", SmCfgInstall)
+	smn_flag.RegisterString("remove", &remove, "do remvoe", SmCfgRemove)
+	smn_flag.RegisterString("update", &update, "do update", SmCfgUpdate)
+	smn_flag.RegisterString("check", &check, "do check, is exist success", SmCfgCheck)
+	smn_flag.RegisterString("collect", &collect, "collect local config to update remote.", SmCfgCollect)
+	smn_flag.RegisterBool("pull", &pull, "update the smcfg response", SmCfgPull)
 	flag.Parse()
-	smFlag.Parse(flag.Args(), onErr)
+	smn_flag.Parse(flag.Args(), onErr)
 }
