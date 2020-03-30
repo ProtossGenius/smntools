@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_err"
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
@@ -43,6 +44,15 @@ var (
 	ErrNothingCanUpdate        = "Error nothing can update"
 )
 
+func issue() string {
+	if smn_file.IsFileExist("/etc/redhat-release") {
+		return "centos"
+	}
+	data, err := smn_file.FileReadAll("/etc/issue")
+	onErr.OnErr(err)
+	osv := strings.ToLower(string(data))
+	return strings.Split(osv, " ")[0]
+}
 func dirCmd(dir, e string, args ...string) error {
 	cmd := exec.Command(e, args...)
 	cmd.Dir = dir
@@ -72,14 +82,45 @@ func GetFromGit(args []string) error {
 	//clone from git_path
 	return dirCmd(homePath, "git", "clone", git_path, ".smcfg")
 }
+func install_sh(path string) string {
+	osv := issue()
+	osInstall := path + "/" + osv + ".install.sh"
+	if smn_file.IsFileExist(osInstall) {
+		return osInstall
+	}
+	return "install.sh"
+}
 
 func SmCfgInstall(args []string) error {
-	//rely install
-	err := dirCmd(cfgPath+install, "sh", "rely.sh")
-	if err != nil {
-		return err
+	if !smn_file.IsFileExist(cfgPath + install) {
+		return fmt.Errorf("Err no such config %s", install)
 	}
-	return dirCmd(cfgPath+install, "sh", "install.sh")
+	//rely install
+	relyList := cfgPath + install + "/rely.list"
+	if smn_file.IsFileExist(relyList) {
+		data, err := smn_file.FileReadAll(relyList)
+		for _, line := range strings.Split(string(data), "\n") {
+			line = strings.TrimSpace(line)
+			if line == "" || line[0] == '#' || line[0] == '/' {
+				continue
+			}
+			if !smn_file.IsFileExist(cfgPath + line) {
+				return fmt.Errorf("No such config %s ", line)
+			}
+			err = dirCmd(cfgPath+line, "sh", "check.sh")
+			if err != nil {
+				err = dirCmd(cfgPath+line, "sh", install_sh(cfgPath+line))
+				if err != nil {
+					return fmt.Errorf("Error, can't install %s error is %d", line, err)
+				}
+			}
+
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return dirCmd(cfgPath+install, "sh", install_sh(cfgPath+install))
 }
 
 func SmCfgCheck(args []string) error {
