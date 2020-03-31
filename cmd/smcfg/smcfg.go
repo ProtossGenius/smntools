@@ -37,8 +37,12 @@ var (
 	homePath = smcfg.GetUserHome()
 )
 
+//loopRely   configName ==> is this config need to install
+var loopRely = map[string]bool{}
+
 var (
 	ErrCfgPathExist     string = "Error Config directory exist."
+	ErrLoopRely                = "Error loop rely : [%s] and [%s] "
 	ErrNoCheckTarget           = "Error not found check target."
 	ErrNothingCanRemove        = "Error nothing can remove"
 	ErrNothingCanUpdate        = "Error nothing can update"
@@ -91,14 +95,25 @@ func install_sh(path string) string {
 	return "install.sh"
 }
 
-func SmCfgInstall(args []string) error {
-	if !smn_file.IsFileExist(cfgPath + install) {
-		return fmt.Errorf("Err no such config %s", install)
+func do_install(cfgName string) error {
+	loopRely[cfgName] = true
+	defer func() { loopRely[cfgName] = false }()
+	dirPath := cfgPath + cfgName
+	if !smn_file.IsFileExist(dirPath) {
+		return fmt.Errorf("Err no such config %s", cfgName)
+	}
+	//check
+	err := dirCmd(dirPath, "sh", "check.sh")
+	if err == nil {
+		return nil
 	}
 	//rely install
-	relyList := cfgPath + install + "/rely.list"
+	relyList := dirPath + "/rely.list"
 	if smn_file.IsFileExist(relyList) {
 		data, err := smn_file.FileReadAll(relyList)
+		if err != nil {
+			return err
+		}
 		for _, line := range strings.Split(string(data), "\n") {
 			line = strings.TrimSpace(line)
 			if line == "" || line[0] == '#' || line[0] == '/' {
@@ -107,20 +122,20 @@ func SmCfgInstall(args []string) error {
 			if !smn_file.IsFileExist(cfgPath + line) {
 				return fmt.Errorf("No such config %s ", line)
 			}
-			err = dirCmd(cfgPath+line, "sh", "check.sh")
-			if err != nil {
-				err = dirCmd(cfgPath+line, "sh", install_sh(cfgPath+line))
-				if err != nil {
-					return fmt.Errorf("Error, can't install %s error is %d", line, err)
-				}
+			if loopRely[line] {
+				return fmt.Errorf(ErrLoopRely, cfgName, line)
 			}
-
-		}
-		if err != nil {
-			return err
+			err = do_install(line)
+			if err != nil {
+				return err
+			}
 		}
 	}
-	return dirCmd(cfgPath+install, "sh", install_sh(cfgPath+install))
+	return dirCmd(dirPath, "sh", install_sh(dirPath))
+}
+
+func SmCfgInstall(args []string) error {
+	return do_install(install)
 }
 
 func SmCfgCheck(args []string) error {
