@@ -96,6 +96,7 @@ func install_sh(path string) string {
 }
 
 func do_install(cfgName string) error {
+	fmt.Println("installing ", cfgName, "......")
 	loopRely[cfgName] = true
 	defer func() { loopRely[cfgName] = false }()
 	dirPath := cfgPath + cfgName
