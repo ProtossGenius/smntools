@@ -17,7 +17,10 @@ c_smgoget:
 c_smpf:
 	cd ./cmd/smpf && go install 
 
-install: c_smgoget c_smcfg c_smpf
+c_asppl:
+	cd ./cmd/asppl && go install 
+
+install: c_smgoget c_smcfg c_smpf c_asppl
 
 c_smcfg:
 	cd ./cmd/smcfg && go install 
@@ -25,3 +28,7 @@ c_smcfg:
 qrun: c_smcfg
 	smcfg -get "git@github.com:ProtossGenius/smcfgs.git"
 
+auto_code: nothing
+	go run ./ac_asppl.go
+
+nothing:
