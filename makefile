@@ -14,7 +14,10 @@ clean:
 c_smgoget:
 	cd ./cmd/smgoget/ && go install
 
-install: c_smgoget c_smcfg 
+c_smpf:
+	cd ./cmd/smpf && go install 
+
+install: c_smgoget c_smcfg c_smpf
 
 c_smcfg:
 	cd ./cmd/smcfg && go install 
