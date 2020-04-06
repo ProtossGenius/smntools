@@ -11,16 +11,13 @@ clean:
 	rm -rf ./datas/proto/temp
 	rm -rf ./pb
 
-c_smgoget:
-	cd ./cmd/smgoget/ && go install
-
 c_smpf:
 	cd ./cmd/smpf && go install 
 
 c_asppl:
 	cd ./cmd/asppl && go install 
 
-install: c_smgoget c_smcfg c_smpf c_asppl
+install: c_smcfg c_smpf c_asppl
 
 c_smcfg:
 	cd ./cmd/smcfg && go install 
