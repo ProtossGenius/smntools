@@ -4,6 +4,7 @@ test: clean
 	smn_pr_go -proto "./datas/proto/" -pkgh "pb/" -gopath=$(GOPATH)/src -ext="/github.com/ProtossGenius/smntools"
 	smn_itf2rpc_go -i "./smnitf/" -s -c -o "./rpc_nitf" -gopath=$(GOPATH)/src -pkgh="github.com/ProtossGenius"
 	go run ./test/smnrpc/test.go
+
 clean:
 	rm -rf ./pbr
 	rm -rf ./rpc_nitf
@@ -17,13 +18,16 @@ c_smpf:
 c_asppl:
 	cd ./cmd/asppl && go install 
 
-install: c_smcfg c_smpf c_asppl
+c_smnrpc_autocode:
+	cd ./cmd/smnrpc-autocode && go install
+
+install: c_smcfg c_smpf c_asppl c_smnrpc_autocode 
 
 c_smcfg:
 	cd ./cmd/smcfg && go install 
 
-qrun: c_smcfg
-	smcfg -get "git@github.com:ProtossGenius/smcfgs.git"
+qrun: c_smnrpc_autocode 
+	smnrpc-autocode
 
 auto_code: nothing
 	go run ./ac_asppl.go
