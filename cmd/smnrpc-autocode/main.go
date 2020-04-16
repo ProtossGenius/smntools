@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"path/filepath"
@@ -12,6 +13,9 @@ import (
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_pglang"
 	"github.com/ProtossGenius/SureMoonNet/smn/analysis/smn_rpc_itf"
+	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/goitf2lang"
+	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/itf2proto"
+	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/proto_compile"
 )
 
 /*
@@ -35,7 +39,7 @@ type AutoCodeCfg struct {
 	Target    map[string]string `json:"target"     node:"target to output path. such as {"go_c":"./clt/", "go_s":"./svr/") ...  target: [lang]_[c/s]"`
 	ProtoPath string            `json:"proto_path" node:"proto file path."`
 	Module    string            `json:"module"    node:"project's go-package."`
-
+	Src       string            `json:"src" node:"code path, such as java is ./src/ "`
 	//language suit. not must .
 }
 
@@ -70,23 +74,44 @@ func printDoc() {
 
 }
 
-func itf2proto(itf *smn_pglang.ItfDef) {
-
-}
+func writeRpc(fullPkg string, itf *smn_pglang.ItfDef)
 
 func autocode() {
 	c := readCfg()
 	itfs, err := smn_rpc_itf.GetItfListFromDir(c.ItfPath)
 	checkerr(err)
+	langMap := make(map[string]bool)
+	for target := range c.Target {
+		lang := strings.Split(target, "_")[0]
+		langMap[lang] = true
+	}
 	for path, list := range itfs {
+		//go interface to proto.
+		itf2proto.WriteProto(c.ProtoPath, list)
+		//go interface to lang interface.
+		for lang := range langMap {
+			goitf2lang.WriteInterface(lang, c.Src, list[0].Package, list)
+		}
+
 		fullPath, err := filepath.Abs(path)
 		checkerr(err)
 		pwdPath, err := filepath.Abs("./")
 		fullPkg := c.Module + strings.Replace(fullPath, pwdPath, "", -1)
 		fmt.Println("package is: ", list[0].Package, "; path is :", path, "; full package is :", fullPkg)
 		for _, itf := range list {
-			itf2proto(itf)
+			writeRpc(fullPkg, itf)
 		}
+	}
+	errList := []string{}
+	//proto compile
+	for lang := range langMap {
+		err := proto_compile.Compile(c.ProtoPath, c.Src+"/./pb/", c.Module, lang)
+		if err != nil {
+			errList = append(errList, fmt.Sprintf("\tWhen compile lang [%s], error is %s", lang, err.Error()))
+		}
+	}
+	if len(errList) != 0 {
+		checkerr(errors.New("Error When compile proto, error List: \n" + strings.Join(errList, "\n")))
 	}
 }
 

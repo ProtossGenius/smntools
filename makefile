@@ -1,6 +1,6 @@
 test: clean  
 	smn_itf2proto -i "./smnitf" -o ./datas/proto
-	smn_protocpl -i ./datas/proto/  -o "./pb/" -ep "github.com/ProtossGenius/smntools"
+	smn_protocpl -i ./datas/proto/  -o ./pb/ -gm "github.com/ProtossGenius/smntools" -lang go
 	smn_pr_go -proto "./datas/proto/" -pkgh "pb/" -gopath=$(GOPATH)/src -ext="/github.com/ProtossGenius/smntools"
 	smn_itf2rpc_go -i "./smnitf/" -s -c -o "./rpc_nitf" -gopath=$(GOPATH)/src -pkgh="github.com/ProtossGenius"
 	go run ./test/smnrpc/test.go
