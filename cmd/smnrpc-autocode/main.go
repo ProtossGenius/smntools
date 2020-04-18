@@ -74,7 +74,8 @@ func printDoc() {
 
 }
 
-func writeRpc(fullPkg string, itf *smn_pglang.ItfDef)
+func writeRpc(fullPkg string, itf *smn_pglang.ItfDef) {
+}
 
 func autocode() {
 	c := readCfg()
