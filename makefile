@@ -21,7 +21,7 @@ c_asppl:
 c_smnrpc_autocode:
 	cd ./cmd/smnrpc-autocode && go install
 
-install: c_smcfg c_smpf c_asppl c_smnrpc_autocode 
+install: auto_code  c_smcfg c_smpf c_asppl c_smnrpc_autocode 
 
 c_smcfg:
 	cd ./cmd/smcfg && go install 
@@ -29,7 +29,7 @@ c_smcfg:
 qrun: c_smnrpc_autocode 
 	smnrpc-autocode
 
-auto_code: nothing
+auto_code: ./auto_code/smntac_asppl/key.go 
 	go run ./ac_asppl.go
 
 nothing:

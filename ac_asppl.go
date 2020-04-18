@@ -5,6 +5,7 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
@@ -57,6 +58,8 @@ func toByteArr(name string, data []byte) string {
 func main() {
 	pkLen := 1280
 	var initStr string
+	err := os.MkdirAll("./auto_code/smntac_asppl", os.ModePerm)
+	check(err)
 	f, err := smn_file.CreateNewFile("./auto_code/smntac_asppl/key.go")
 	check(err)
 	defer f.Close()
