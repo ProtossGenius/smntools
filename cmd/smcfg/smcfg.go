@@ -41,11 +41,12 @@ var (
 var loopRely = map[string]bool{}
 
 var (
-	ErrCfgPathExist     string = "Error Config directory exist."
-	ErrLoopRely                = "Error loop rely : [%s] and [%s] "
-	ErrNoCheckTarget           = "Error not found check target."
-	ErrNothingCanRemove        = "Error nothing can remove"
-	ErrNothingCanUpdate        = "Error nothing can update"
+	ErrCfgPathExist      string = "Error Config directory exist."
+	ErrLoopRely                 = "Error loop rely : [%s] and [%s] "
+	ErrNoCheckTarget            = "Error not found check target."
+	ErrNothingCanRemove         = "Error nothing can remove"
+	ErrNothingCanUpdate         = "Error nothing can update"
+	ErrNothingCanCollect        = "Error nothing can collect"
 )
 
 func issue() string {
@@ -164,8 +165,8 @@ func SmCfgUpdate(args []string) error {
 }
 
 func SmCfgCollect(args []string) error {
-	if update == "" {
-		return errors.New(ErrNothingCanUpdate)
+	if collect == "" {
+		return errors.New(ErrNothingCanCollect)
 	}
 	return dirCmd(cfgPath+update, "sh", "collect.sh")
 }
