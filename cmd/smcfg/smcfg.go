@@ -168,7 +168,7 @@ func SmCfgCollect(args []string) error {
 	if collect == "" {
 		return errors.New(ErrNothingCanCollect)
 	}
-	return dirCmd(cfgPath+update, "sh", "collect.sh")
+	return dirCmd(cfgPath+collect, "sh", "collect.sh")
 }
 
 func SmCfgPull(args []string) error {
