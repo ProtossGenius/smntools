@@ -53,9 +53,12 @@ func issue() string {
 	if smn_file.IsFileExist("/etc/redhat-release") {
 		return "centos"
 	}
+
 	data, err := smn_file.FileReadAll("/etc/issue")
 	onErr.OnErr(err)
+
 	osv := strings.ToLower(string(data))
+
 	return strings.Split(osv, " ")[0]
 }
 func dirCmd(dir, e string, args ...string) error {
@@ -63,8 +66,8 @@ func dirCmd(dir, e string, args ...string) error {
 	cmd.Dir = dir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	return cmd.Run()
 
+	return cmd.Run()
 }
 
 func GetFromGit(args []string) error {
@@ -116,14 +119,17 @@ func do_install(cfgName string) error {
 		if err != nil {
 			return err
 		}
+
 		for _, line := range strings.Split(string(data), "\n") {
 			line = strings.TrimSpace(line)
 			if line == "" || line[0] == '#' || line[0] == '/' {
 				continue
 			}
+
 			if !smn_file.IsFileExist(cfgPath + line) {
 				return fmt.Errorf("No such config %s ", line)
 			}
+
 			if loopRely[line] {
 				return fmt.Errorf(ErrLoopRely, cfgName, line)
 			}
@@ -133,6 +139,7 @@ func do_install(cfgName string) error {
 			}
 		}
 	}
+
 	return dirCmd(dirPath, "sh", install_sh(dirPath))
 }
 
@@ -147,6 +154,7 @@ func SmCfgCheck(args []string) error {
 		}
 		check = install
 	}
+
 	return dirCmd(cfgPath+check, "sh", "check.sh")
 }
 
@@ -154,6 +162,7 @@ func SmCfgRemove(args []string) error {
 	if remove == "" {
 		return errors.New(ErrNothingCanRemove)
 	}
+
 	return dirCmd(cfgPath+remove, "sh", "remove.sh")
 }
 
@@ -161,6 +170,7 @@ func SmCfgUpdate(args []string) error {
 	if update == "" {
 		return errors.New(ErrNothingCanUpdate)
 	}
+
 	return dirCmd(cfgPath+update, "sh", "update.sh")
 }
 
@@ -168,6 +178,7 @@ func SmCfgCollect(args []string) error {
 	if collect == "" {
 		return errors.New(ErrNothingCanCollect)
 	}
+
 	return dirCmd(cfgPath+collect, "sh", "collect.sh")
 }
 

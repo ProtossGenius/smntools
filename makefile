@@ -29,7 +29,7 @@ c_smcfg:
 qrun: c_smnrpc_autocode 
 	smnrpc-autocode
 
-auto_code: ./auto_code/smntac_asppl/key.go 
+auto_code:
 	go run ./ac_asppl.go
 
 nothing:

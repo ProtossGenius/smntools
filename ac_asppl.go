@@ -46,28 +46,42 @@ func toByteArr(name string, data []byte) string {
 	lTpl := "\t%s := []byte{%s}"
 	nums := []string{}
 	dLen := len(data)
+
 	for i := 0; i < dLen; i++ {
 		if i%30 == 0 {
 			nums = append(nums, "\n\t\t")
 		}
+
 		nums = append(nums, fmt.Sprintf("%d, ", data[i]))
 	}
+
 	return fmt.Sprintf(lTpl, name, strings.Join(nums, ""))
 }
 
 func main() {
-	pkLen := 1280
 	var initStr string
+
+	if smn_file.IsFileExist("./auto_code/smntac_asppl/key.go") {
+		fmt.Println("file ", " ./auto_code/smntac_asppl/key.go ", "exist,  exit.")
+		return
+	}
+
+	pkLen := 1280
 	err := os.MkdirAll("./auto_code/smntac_asppl", os.ModePerm)
+
 	check(err)
 	f, err := smn_file.CreateNewFile("./auto_code/smntac_asppl/key.go")
 	check(err)
+
 	defer f.Close()
+
 	priKey, err := rsa.GenerateKey(rand.Reader, 1280)
 	check(err)
+
 	priBytes := x509.MarshalPKCS1PrivateKey(priKey)
 	pubBytes, err := x509.MarshalPKIXPublicKey(&priKey.PublicKey)
 	check(err)
+
 	sts := []string{"\tvar err error",
 		toByteArr("pubBytes", pubBytes),
 		toByteArr("priBytes", priBytes),
@@ -78,5 +92,7 @@ func main() {
 		"\tif err != nil { panic(err) }",
 	}
 	initStr = strings.Join(sts, "\n")
-	f.WriteString(fmt.Sprintf(tpl, initStr, pkLen))
+	_, err = f.WriteString(fmt.Sprintf(tpl, initStr, pkLen))
+
+	check(err)
 }
