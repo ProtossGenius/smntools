@@ -29,7 +29,7 @@ c_smcfg:
 qrun: c_smnrpc_autocode 
 	smnrpc-autocode
 
-auto_code:
-	go run ./autocode-scripts/ac_asppl.go
+auto_code: nothing
+	go run build.go 
 
 nothing:
