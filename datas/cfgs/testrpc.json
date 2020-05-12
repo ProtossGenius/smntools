@@ -1,4 +1,5 @@
 {
+	"src":"./",
 	"itf_path":"./smnitf",
 	"target":{"go_c":"./rpc_nitf/cltrpc","go_s":"./rpc_nitf/svrrpc"},
 	"proto_path":"./datas/proto",
