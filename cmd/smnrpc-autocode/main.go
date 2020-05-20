@@ -35,6 +35,16 @@ rem:
 
 */
 
+//JSONConfigStr sample config.
+const JSONConfigStr = `{
+    "src":"./",
+    "itf_path":"./smnitf",
+    "target":{"go_c":"./rpc_nitf/cltrpc","go_s":"./rpc_nitf/svrrpc"},
+    "proto_path":"./datas/proto",
+    "out_path":"./rpc_nitf",
+    "module":"github.com/ProtossGenius/smntools"
+}`
+
 //AutoCodeCfg json.
 type AutoCodeCfg struct {
 	ItfPath   string            `json:"itf_path"   node:"go-interface path"`
@@ -102,7 +112,6 @@ func autocode(cfg string) {
 		checkerr(err)
 		//get fullPkg
 		fullPkg := c.Module + strings.Replace(fullPath, pwdPath, "", -1)
-		fmt.Println("package is: ", list[0].Package, "; path is :", path, "; full package is :", fullPkg)
 		//write RPC code
 		for target, oPath := range c.Target {
 			for _, itf := range list {
@@ -130,16 +139,23 @@ func autocode(cfg string) {
 func main() {
 	// flag var
 	var (
-		cfg string
-		doc bool
+		cfg     string
+		example bool //sample config path
+		doc     bool
 	)
 
 	flag.StringVar(&cfg, "cfg", "./auto-code-cfg.json", "a config file to describ smnrpc-autocode should do what.")
 	flag.BoolVar(&doc, "doc", false, "show the doc about cfg file.")
+	flag.BoolVar(&example, "example", false, "output a example config.")
 	flag.Parse()
 
 	if doc {
 		printDoc()
+		return
+	}
+
+	if example {
+		fmt.Print(JSONConfigStr)
 		return
 	}
 
