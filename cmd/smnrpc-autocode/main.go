@@ -16,7 +16,6 @@ import (
 	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/itf2proto"
 	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/itf2rpc"
 	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/proto_compile"
-	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/proto_read_lang"
 )
 
 /*
@@ -95,11 +94,6 @@ func autocode(cfg string) {
 		for lang := range langMap {
 			//go interface to lang interface.
 			goitf2lang.WriteInterface(lang, c.Src, list[0].Package, list)
-			//proto reader.
-			if f, ok := proto_read_lang.Readers[lang]; ok {
-				err = f(c.ProtoPath, c.Module)
-				checkerr(err)
-			}
 		}
 
 		fullPath, err := filepath.Abs(path)
