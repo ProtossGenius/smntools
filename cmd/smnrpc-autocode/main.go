@@ -41,7 +41,6 @@ const JSONConfigStr = `{
     "itf_path":"./smnitf",
     "target":{"go_c":"./rpc_nitf/cltrpc","go_s":"./rpc_nitf/svrrpc"},
     "proto_path":"./datas/proto",
-    "out_path":"./rpc_nitf",
     "module":"github.com/ProtossGenius/smntools"
 }`
 
