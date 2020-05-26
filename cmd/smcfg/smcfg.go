@@ -90,13 +90,17 @@ func GetFromGit(args []string) error {
 	//clone from git_path
 	return dirCmd(homePath, "git", "clone", git_path, ".smcfg")
 }
-func install_sh(path string) string {
+
+func findFile(basePath, shellName string) string {
 	osv := issue()
-	osInstall := path + "/" + osv + ".install.sh"
-	if smn_file.IsFileExist(osInstall) {
-		return osInstall
+	forOs := osv + "." + shellName + ".sh"
+	fullPath := basePath + "/" + forOs
+	fmt.Println(fullPath)
+	if smn_file.IsFileExist(fullPath) {
+		return forOs
 	}
-	return "install.sh"
+
+	return shellName + ".sh"
 }
 
 func do_install(cfgName string) error {
@@ -140,7 +144,7 @@ func do_install(cfgName string) error {
 		}
 	}
 
-	return dirCmd(dirPath, "sh", install_sh(dirPath))
+	return dirCmd(dirPath, "sh", findFile(dirPath, "install"))
 }
 
 func SmCfgInstall(args []string) error {
@@ -155,7 +159,7 @@ func SmCfgCheck(args []string) error {
 		check = install
 	}
 
-	return dirCmd(cfgPath+check, "sh", "check.sh")
+	return dirCmd(cfgPath+check, "sh", findFile(cfgPath+check, "check"))
 }
 
 func SmCfgRemove(args []string) error {
@@ -163,7 +167,7 @@ func SmCfgRemove(args []string) error {
 		return errors.New(ErrNothingCanRemove)
 	}
 
-	return dirCmd(cfgPath+remove, "sh", "remove.sh")
+	return dirCmd(cfgPath+remove, "sh", findFile(cfgPath+remove, "remove"))
 }
 
 func SmCfgUpdate(args []string) error {
@@ -171,7 +175,7 @@ func SmCfgUpdate(args []string) error {
 		return errors.New(ErrNothingCanUpdate)
 	}
 
-	return dirCmd(cfgPath+update, "sh", "update.sh")
+	return dirCmd(cfgPath+update, "sh", findFile(cfgPath+update, "update"))
 }
 
 func SmCfgCollect(args []string) error {
@@ -179,13 +183,14 @@ func SmCfgCollect(args []string) error {
 		return errors.New(ErrNothingCanCollect)
 	}
 
-	return dirCmd(cfgPath+collect, "sh", "collect.sh")
+	return dirCmd(cfgPath+collect, "sh", findFile(cfgPath+collect, "collect"))
 }
 
 func SmCfgPull(args []string) error {
 	return dirCmd(cfgPath, "git", "pull")
 }
 func main() {
+	fmt.Println(issue())
 	flag.BoolVar(&force, "f", force, "force excute. ")
 	smn_flag.RegisterString("get", &git_path,
 		fmt.Sprintf("git path and install it to path[%s],   -f means delete old CfgPath ", smcfg.GetCfgPath()),
