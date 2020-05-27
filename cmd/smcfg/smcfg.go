@@ -18,7 +18,6 @@ var (
 	git_path    string
 	force       bool
 	install     string
-	update      string
 	remove      string
 	check       string
 	collect     string
@@ -170,14 +169,6 @@ func SmCfgRemove(args []string) error {
 	return dirCmd(cfgPath+remove, "sh", findFile(cfgPath+remove, "remove"))
 }
 
-func SmCfgUpdate(args []string) error {
-	if update == "" {
-		return errors.New(ErrNothingCanUpdate)
-	}
-
-	return dirCmd(cfgPath+update, "sh", findFile(cfgPath+update, "update"))
-}
-
 func SmCfgCollect(args []string) error {
 	if collect == "" {
 		return errors.New(ErrNothingCanCollect)
@@ -190,14 +181,13 @@ func SmCfgPull(args []string) error {
 	return dirCmd(cfgPath, "git", "pull")
 }
 func main() {
-	fmt.Println(issue())
 	flag.BoolVar(&force, "f", force, "force excute. ")
 	smn_flag.RegisterString("get", &git_path,
 		fmt.Sprintf("git path and install it to path[%s],   -f means delete old CfgPath ", smcfg.GetCfgPath()),
 		GetFromGit)
 	smn_flag.RegisterString("install", &install, "do install", SmCfgInstall)
 	smn_flag.RegisterString("remove", &remove, "do remvoe", SmCfgRemove)
-	smn_flag.RegisterString("update", &update, "do update", SmCfgUpdate)
+	smn_flag.RegisterString("update", &install, "do update", SmCfgInstall)
 	smn_flag.RegisterString("check", &check, "do check, is exist success", SmCfgCheck)
 	smn_flag.RegisterString("collect", &collect, "collect local config to update remote.", SmCfgCollect)
 	smn_flag.RegisterBool("pull", &pull, "update the smcfg response", SmCfgPull)
