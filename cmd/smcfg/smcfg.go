@@ -15,8 +15,7 @@ import (
 )
 
 var (
-	force  bool
-	target string
+	force bool
 )
 
 var (
