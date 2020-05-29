@@ -18,7 +18,10 @@ c_asppl:
 c_smnrpc_autocode:
 	cd ./cmd/smnrpc-autocode && go install
 
-install: auto_code  c_smcfg c_smpf c_asppl c_smnrpc_autocode 
+c_smwget:
+	cd ./cmd/smwget && go install
+
+install: auto_code  c_smcfg c_smpf c_asppl c_smnrpc_autocode c_smwget
 
 c_smcfg:
 	cd ./cmd/smcfg && go install 

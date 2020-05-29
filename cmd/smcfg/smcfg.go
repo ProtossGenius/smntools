@@ -15,17 +15,8 @@ import (
 )
 
 var (
-	git_path    string
-	force       bool
-	install     string
-	remove      string
-	check       string
-	collect     string
-	pull        bool
-	update_all  bool
-	install_all bool
-	check_all   bool
-	remove_all  bool
+	force  bool
+	target string
 )
 
 var (
@@ -69,7 +60,7 @@ func dirCmd(dir, e string, args ...string) error {
 	return cmd.Run()
 }
 
-func GetFromGit(args []string) error {
+func GetFromGit(target string) error {
 	//init config path
 	if smn_file.IsFileExist(cfgPath) {
 		fmt.Println("config path exist : ", cfgPath)
@@ -85,16 +76,15 @@ func GetFromGit(args []string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("cloning path ...", git_path)
+	fmt.Println("cloning path ...", target)
 	//clone from git_path
-	return dirCmd(homePath, "git", "clone", git_path, ".smcfg")
+	return dirCmd(homePath, "git", "clone", target, ".smcfg")
 }
 
 func findFile(basePath, shellName string) string {
 	osv := issue()
 	forOs := osv + "." + shellName + ".sh"
 	fullPath := basePath + "/" + forOs
-	fmt.Println(fullPath)
 	if smn_file.IsFileExist(fullPath) {
 		return forOs
 	}
@@ -146,51 +136,36 @@ func do_install(cfgName string) error {
 	return dirCmd(dirPath, "sh", findFile(dirPath, "install"))
 }
 
-func SmCfgInstall(args []string) error {
-	return do_install(install)
+func SmCfgInstall(target string) error {
+	return do_install(target)
 }
 
-func SmCfgCheck(args []string) error {
-	if check == "" {
-		if install == "" {
-			return errors.New(ErrNoCheckTarget)
-		}
-		check = install
+func SmUpdate(target string) error {
+	fmt.Println("updateing ", target, "......")
+	err := dirCmd(cfgPath+target, "sh", "check.sh")
+	if err != nil {
+		return do_install(target)
 	}
 
-	return dirCmd(cfgPath+check, "sh", findFile(cfgPath+check, "check"))
+	return dirCmd(cfgPath+target, "sh", findFile(cfgPath+target, "update"))
 }
 
-func SmCfgRemove(args []string) error {
-	if remove == "" {
-		return errors.New(ErrNothingCanRemove)
+func SmCfgNormal(act string) func(target string) error {
+	return func(target string) error {
+		return dirCmd(cfgPath+target, "sh", findFile(cfgPath+target, act))
 	}
-
-	return dirCmd(cfgPath+remove, "sh", findFile(cfgPath+remove, "remove"))
 }
 
-func SmCfgCollect(args []string) error {
-	if collect == "" {
-		return errors.New(ErrNothingCanCollect)
-	}
-
-	return dirCmd(cfgPath+collect, "sh", findFile(cfgPath+collect, "collect"))
-}
-
-func SmCfgPull(args []string) error {
-	return dirCmd(cfgPath, "git", "pull")
-}
 func main() {
 	flag.BoolVar(&force, "f", force, "force excute. ")
-	smn_flag.RegisterString("get", &git_path,
+	smn_flag.RegisterString("get",
 		fmt.Sprintf("git path and install it to path[%s],   -f means delete old CfgPath ", smcfg.GetCfgPath()),
 		GetFromGit)
-	smn_flag.RegisterString("install", &install, "do install", SmCfgInstall)
-	smn_flag.RegisterString("remove", &remove, "do remvoe", SmCfgRemove)
-	smn_flag.RegisterString("update", &install, "do update", SmCfgInstall)
-	smn_flag.RegisterString("check", &check, "do check, is exist success", SmCfgCheck)
-	smn_flag.RegisterString("collect", &collect, "collect local config to update remote.", SmCfgCollect)
-	smn_flag.RegisterBool("pull", &pull, "update the smcfg response", SmCfgPull)
+	smn_flag.RegisterString("install", "do install", SmCfgInstall)
+	smn_flag.RegisterString("remove", "do remvoe", SmCfgNormal("remove"))
+	smn_flag.RegisterString("update", "do update", SmUpdate)
+	smn_flag.RegisterString("check", "do check, is exist success", SmCfgNormal("check"))
+	smn_flag.RegisterString("collect", "collect local config to update remote.", SmCfgNormal("collect"))
 	flag.Parse()
 	smn_flag.Parse(flag.Args(), onErr)
 }
