@@ -4,6 +4,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
@@ -65,9 +66,11 @@ func readCfg(cfg string) *AutoCodeCfg {
 	cfgStruct := &AutoCodeCfg{}
 	err = smn_data.GetDataFromStr(string(data), &cfgStruct)
 	checkerr(err)
+
 	if cfgStruct.Src == "" {
 		cfgStruct.Src = "./"
 	}
+
 	return cfgStruct
 }
 
@@ -87,6 +90,11 @@ func autocode(cfg string) {
 	c := readCfg(cfg)
 	itfs, err := smn_rpc_itf.GetItfListFromDir(c.ItfPath)
 	checkerr(err)
+
+	if !smn_file.IsFileExist(c.ProtoPath) {
+		err := os.MkdirAll(c.ProtoPath, os.ModePerm)
+		checkerr(err)
+	}
 
 	langMap := make(map[string]bool)
 
