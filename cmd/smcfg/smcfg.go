@@ -61,6 +61,10 @@ func dirCmd(dir, e string, args ...string) error {
 
 func GetFromGit(target string) error {
 	//init config path
+	if target == "." {
+		target = "https://github.com/ProtossGenius/smcfgs.git"
+	}
+
 	if smn_file.IsFileExist(cfgPath) {
 		fmt.Println("config path exist : ", cfgPath)
 		if !force {
