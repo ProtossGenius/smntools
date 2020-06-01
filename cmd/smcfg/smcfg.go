@@ -159,16 +159,21 @@ func SmCfgNormal(act string) func(target string) error {
 	}
 }
 
+func registe(name, usage string) {
+	smn_flag.RegisterString(name, usage, SmCfgNormal(name))
+}
+
 func main() {
 	flag.BoolVar(&force, "f", force, "force excute. ")
 	smn_flag.RegisterString("get",
 		fmt.Sprintf("git path and install it to path[%s],   -f means delete old CfgPath ", smcfg.GetCfgPath()),
 		GetFromGit)
 	smn_flag.RegisterString("install", "do install", SmCfgInstall)
-	smn_flag.RegisterString("remove", "do remvoe", SmCfgNormal("remove"))
 	smn_flag.RegisterString("update", "do update", SmUpdate)
-	smn_flag.RegisterString("check", "do check, is exist success", SmCfgNormal("check"))
-	smn_flag.RegisterString("collect", "collect local config to update remote.", SmCfgNormal("collect"))
+	registe("remove", "do remvoe")
+	registe("status", "show status")
+	registe("check", "do check, is exist success")
+	registe("collect", "collect local config to update remote.")
 	flag.Parse()
 	smn_flag.Parse(flag.Args(), onErr)
 }
