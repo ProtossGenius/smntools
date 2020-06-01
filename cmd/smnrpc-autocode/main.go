@@ -123,7 +123,9 @@ func autocode(cfg string) {
 		for target, oPath := range c.Target {
 			for _, itf := range list {
 				err = itf2rpc.Write(target, oPath, c.Module, fullPkg, itf)
-				checkerr(err)
+				if err != nil {
+					fmt.Println("Error Happened when write RPC code. error is : ", err.Error())
+				}
 			}
 		}
 	}
