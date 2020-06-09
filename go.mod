@@ -9,5 +9,3 @@ require (
 	github.com/json-iterator/go v1.1.9 // indirect
 	google.golang.org/protobuf v1.22.0
 )
-
-replace github.com/ProtossGenius/SureMoonNet => /data/workspace/go/src/github.com/ProtossGenius/SureMoonNet
