@@ -2,8 +2,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200306105359-daa6b42af4ea/go.mod h1:DexIz9X8JQLADYOefbi4niOFuCMG8JiRfVDgy0Qn7EQ=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200521032145-0c59772c4523/go.mod h1:JRRabxqHGMICLX6KXhzIChSlNe9VF5QApcU9NJRBTxU=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200529112350-db0971c5a40d/go.mod h1:iiVYhK9bisfhTvxnyirXSOEjO6kxxryYdM8SY33kcno=
-github.com/ProtossGenius/SureMoonNet v0.0.0-20200618023520-9c31918a30fa h1:UHlyplqE/8Bi1RioZHV/x8hw/KKwYQ9yGFsSoZRSQoY=
-github.com/ProtossGenius/SureMoonNet v0.0.0-20200618023520-9c31918a30fa/go.mod h1:NEWW4CRW+jmFR3Li9dWMAsfQcBhnvfn1FBAX4cFCzHE=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200618092154-087d2101a310 h1:bEVC1BZCy+O3GlfVcuvXuMRNNvGwKRqmr9a5sv0OeXs=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200618092154-087d2101a310/go.mod h1:NEWW4CRW+jmFR3Li9dWMAsfQcBhnvfn1FBAX4cFCzHE=
 github.com/ProtossGenius/smn-cpp v0.0.0-20200605081320-4de0f87e059d/go.mod h1:LoCLyGaS0GC9cOD5dcBV1ULkRHF5txwVUg4eepcxgeg=
 github.com/ProtossGenius/smntools v0.0.0-20200520072714-534c87925479/go.mod h1:hUUzj3mblHxQNz1sNTi9k1ZbCRQbbGh6c170tVTrHbM=
 github.com/ProtossGenius/smntools v0.0.0-20200529112536-ce620f794186/go.mod h1:5XP6xb/nndSUIuO0zMtytzmk/vEwzF0obcBDuyh3OFs=
