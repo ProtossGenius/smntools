@@ -9,24 +9,18 @@ clean:
 	rm -rf ./datas/proto/temp
 	rm -rf ./pb
 
-c_smpf:
-	cd ./cmd/smpf && go install 
-
-c_asppl:
-	cd ./cmd/asppl && go install 
-
-c_smnrpc_autocode:
+c_smnrpc_autocode: #SureMoonRPC code tool.
 	cd ./cmd/smnrpc-autocode && go install
 
-c_smwget:
+c_smwget: #check md5sum before call wget.
 	cd ./cmd/smwget && go install
 
-c_gogopb:
+c_gogopb: #change pb to google.golang ver.
 	cd ./cmd/gogopb && go install 
 
-install: auto_code  c_smcfg c_smpf c_asppl c_smnrpc_autocode c_smwget  c_gogopb
+install: auto_code  c_smcfg  c_smnrpc_autocode c_smwget  c_gogopb
 
-c_smcfg:
+c_smcfg: # a config tool
 	cd ./cmd/smcfg && go install 
 
 qrun: c_smnrpc_autocode 
