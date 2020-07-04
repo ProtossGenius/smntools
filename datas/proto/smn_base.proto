@@ -1,0 +1,21 @@
+syntax = "proto3";
+option java_package = "pb";
+option java_outer_classname="smn_base";
+package smn_base;
+
+message Call{
+    int32 dict = 1;
+    bytes msg = 2;
+}
+
+message Ret{
+    int32 dict = 1;
+    bool  Err = 2;
+    bytes msg = 3;
+}
+
+message FPkg{
+    int64 NO = 1;
+    bytes msg = 2;
+    bool  Err = 3;
+}

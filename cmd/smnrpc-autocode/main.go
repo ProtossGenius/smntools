@@ -36,6 +36,29 @@ rem:
 
 */
 
+const baseProto = `syntax = "proto3";
+option java_package = "pb";
+option java_outer_classname="smn_base";
+package smn_base;
+
+message Call{
+    int32 dict = 1;
+    bytes msg = 2;
+}
+
+message Ret{
+    int32 dict = 1;
+    bool  Err = 2;
+    bytes msg = 3;
+}
+
+message FPkg{
+    int64 NO = 1;
+    bytes msg = 2;
+    bool  Err = 3;
+}
+`
+
 //JSONConfigStr sample config.
 const JSONConfigStr = `{
     "src":"./",
@@ -71,6 +94,10 @@ func readCfg(cfg string) *AutoCodeCfg {
 		cfgStruct.Src = "./"
 	}
 
+	if !strings.HasSuffix(cfgStruct.Src, "/") {
+		cfgStruct.Src += "/"
+	}
+
 	return cfgStruct
 }
 
@@ -86,15 +113,31 @@ func printDoc() {
 	}
 }
 
+func checkProtoPath(p string) {
+	if !smn_file.IsFileExist(p) {
+		err := os.MkdirAll(p, os.ModePerm)
+		checkerr(err)
+	}
+
+	if !smn_file.IsFileExist(p + "/smn_base.proto") {
+		of, err := smn_file.CreateNewFile(p + "/smn_base.proto")
+
+		checkerr(err)
+
+		_, err = of.WriteString(baseProto)
+		checkerr(err)
+
+		checkerr(of.Close())
+	}
+}
+
 func autocode(cfg string) {
 	c := readCfg(cfg)
+
 	itfs, err := smn_rpc_itf.GetItfListFromDir(c.ItfPath)
 	checkerr(err)
 
-	if !smn_file.IsFileExist(c.ProtoPath) {
-		err := os.MkdirAll(c.ProtoPath, os.ModePerm)
-		checkerr(err)
-	}
+	checkProtoPath(c.ProtoPath)
 
 	langMap := make(map[string]bool)
 
@@ -110,7 +153,7 @@ func autocode(cfg string) {
 
 		for lang := range langMap {
 			//go interface to lang interface.
-			goitf2lang.WriteInterface(lang, c.Src, list[0].Package, list)
+			goitf2lang.WriteInterface(lang, c.Src+lang, list[0].Package, list)
 		}
 
 		fullPath, err := filepath.Abs(path)
@@ -133,7 +176,7 @@ func autocode(cfg string) {
 	errList := []string{}
 	//proto compile
 	for lang := range langMap {
-		err := proto_compile.Compile(c.ProtoPath, c.Src+"/./pb/", c.Module, lang)
+		err := proto_compile.Compile(c.ProtoPath, c.Src+lang+"/pb/", c.Module, lang)
 
 		if err != nil {
 			errList = append(errList, fmt.Sprintf("\tWhen compile lang [%s], error is %s", lang, err.Error()))
