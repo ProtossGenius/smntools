@@ -20,7 +20,10 @@ c_smwget: #check md5sum before call wget.
 c_gogopb: #change pb to google.golang ver.
 	cd ./cmd/gogopb && go install 
 
-install: auto_code  c_smcfg  c_smnrpc_autocode c_smwget  c_gogopb
+c_smake:
+	cd ./cmd/smake && go install 
+
+install: auto_code  c_smcfg  c_smnrpc_autocode c_smwget  c_gogopb c_smake
 
 c_smcfg: # a config tool
 	cd ./cmd/smcfg && go install 

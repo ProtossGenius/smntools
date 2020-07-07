@@ -3,8 +3,10 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200306105359-daa6b42af4ea/go.mod h1:DexIz9X8JQLADYOefbi4niOFuCMG8JiRfVDgy0Qn7EQ=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200521032145-0c59772c4523/go.mod h1:JRRabxqHGMICLX6KXhzIChSlNe9VF5QApcU9NJRBTxU=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200529112350-db0971c5a40d/go.mod h1:iiVYhK9bisfhTvxnyirXSOEjO6kxxryYdM8SY33kcno=
-github.com/ProtossGenius/SureMoonNet v0.0.0-20200618023520-9c31918a30fa h1:UHlyplqE/8Bi1RioZHV/x8hw/KKwYQ9yGFsSoZRSQoY=
-github.com/ProtossGenius/SureMoonNet v0.0.0-20200618023520-9c31918a30fa/go.mod h1:NEWW4CRW+jmFR3Li9dWMAsfQcBhnvfn1FBAX4cFCzHE=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200605062244-c6b4fa09239d h1:IzGR0FJp7tlxDlX7HCre3vpji1lQLWmqFPruJRRYm74=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200605062244-c6b4fa09239d/go.mod h1:iiVYhK9bisfhTvxnyirXSOEjO6kxxryYdM8SY33kcno=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200707073838-c1fa57eefc34 h1:q1+SB3vTKu0S9EJopVF++j3InDcXemfhL2qEgUi03C0=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200707073838-c1fa57eefc34/go.mod h1:u6sNdsRmfNr+Je5k/zW1A/0VI7/LwiILHm0329pnbX4=
 github.com/ProtossGenius/smn-cpp v0.0.0-20200605081320-4de0f87e059d/go.mod h1:LoCLyGaS0GC9cOD5dcBV1ULkRHF5txwVUg4eepcxgeg=
 github.com/ProtossGenius/smntools v0.0.0-20200520072714-534c87925479/go.mod h1:hUUzj3mblHxQNz1sNTi9k1ZbCRQbbGh6c170tVTrHbM=
 github.com/ProtossGenius/smntools v0.0.0-20200529112536-ce620f794186/go.mod h1:5XP6xb/nndSUIuO0zMtytzmk/vEwzF0obcBDuyh3OFs=
@@ -31,7 +33,6 @@ github.com/golang/protobuf v1.4.0-rc.1/go.mod h1:ceaxUfeHdC40wWswd/P6IGgMaK3YpKi
 github.com/golang/protobuf v1.4.0-rc.1.0.20200221234624-67d41d38c208/go.mod h1:xKAWHe0F5eneWXFV3EuXVDTCmh+JuBKY0li0aMyXATA=
 github.com/golang/protobuf v1.4.0-rc.2/go.mod h1:LlEzMj4AhA7rCAGe4KMBDvJI+AwstrUpVNzEA03Pprs=
 github.com/golang/protobuf v1.4.0-rc.4.0.20200313231945-b860323f09d0/go.mod h1:WU3c8KckQ9AFe+yFwt9sWVRKCVIyN9cPHBJSNnbL67w=
-github.com/golang/protobuf v1.4.0 h1:oOuy+ugB+P/kBdUnG5QaMXSIyJ1q38wWSojYCb3z5VQ=
 github.com/golang/protobuf v1.4.0/go.mod h1:jodUvKwWbYaEsadDk5Fwe5c77LiNKVO9IDvqG2KuDX0=
 github.com/golang/protobuf v1.4.1 h1:ZFgWrT+bLgsYPirOnRfKLYJLvssAegOj/hgyMFdJZe0=
 github.com/golang/protobuf v1.4.1/go.mod h1:U8fpvMrcmy5pZrNK1lt4xCsGvpyWQ/VVv6QDs8UjoX8=
@@ -39,7 +40,6 @@ github.com/golang/snappy v0.0.1/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEW
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/google/go-cmp v0.3.0/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
 github.com/google/go-cmp v0.3.1/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
-github.com/google/go-cmp v0.4.0 h1:xsAVV57WRhGj6kEIi8ReJzQlHHqcBYCElAvkovg3B/4=
 github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.5.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-dap v0.2.0/go.mod h1:5q8aYQFnHOAZEMP+6vmq25HKYAEwE+LF5yh7JKrrhSQ=
@@ -143,7 +143,6 @@ google.golang.org/protobuf v0.0.0-20200221191635-4d8936d0db64/go.mod h1:kwYJMbMJ
 google.golang.org/protobuf v0.0.0-20200228230310-ab0ca4ff8a60/go.mod h1:cfTl7dwQJ+fmap5saPgwCLgHXTUD7jkjRqWcaiX5VyM=
 google.golang.org/protobuf v1.20.1-0.20200309200217-e05f789c0967/go.mod h1:A+miEFZTKqfCUM6K7xSMQL9OKL/b6hQv+e19PK+JZNE=
 google.golang.org/protobuf v1.21.0/go.mod h1:47Nbq4nVaFHyn7ilMalzfO3qCViNmqZ2kzikPIcrTAo=
-google.golang.org/protobuf v1.22.0 h1:cJv5/xdbk1NnMPR1VP9+HU6gupuG9MLBoH1r6RHZ2MY=
 google.golang.org/protobuf v1.22.0/go.mod h1:EGpADcykh3NcUnDUJcl1+ZksZNG86OlYog2l/sGQquU=
 google.golang.org/protobuf v1.23.1-0.20200526195155-81db48ad09cc/go.mod h1:EGpADcykh3NcUnDUJcl1+ZksZNG86OlYog2l/sGQquU=
 google.golang.org/protobuf v1.25.0 h1:Ejskq+SyPohKW+1uil0JJMtmHCgJPJ/qWTxr8qp+R4c=
