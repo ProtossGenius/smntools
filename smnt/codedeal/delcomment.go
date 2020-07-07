@@ -18,9 +18,10 @@ func DeleteComment(src string) (string, error) {
 				break
 			}
 		}
+
+		sm.End()
 	}()
 
-	sm.End()
 	rc := sm.GetResultChan()
 	strArr := make([]string, 0, len(rc))
 
@@ -33,6 +34,10 @@ func DeleteComment(src string) (string, error) {
 		if lp.ProductType() == smn_analysis.ResultError {
 			errP := lp.(*smn_analysis.ProductError)
 			return "", errP.ToError()
+		}
+
+		if lp.ProductType() < 0 {
+			continue
 		}
 
 		if lp.ProductType() != int(lex_pgl.PGLA_PRODUCT_COMMENT) {
