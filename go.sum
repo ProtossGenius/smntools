@@ -7,6 +7,8 @@ github.com/ProtossGenius/SureMoonNet v0.0.0-20200605062244-c6b4fa09239d h1:IzGR0
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200605062244-c6b4fa09239d/go.mod h1:iiVYhK9bisfhTvxnyirXSOEjO6kxxryYdM8SY33kcno=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200707073838-c1fa57eefc34 h1:q1+SB3vTKu0S9EJopVF++j3InDcXemfhL2qEgUi03C0=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200707073838-c1fa57eefc34/go.mod h1:u6sNdsRmfNr+Je5k/zW1A/0VI7/LwiILHm0329pnbX4=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200708073246-14e2b3e5eafa h1:gR0hiGbRTqLEQWuzlb4rNmBOLHZWLYwpscnhJZNKxYM=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200708073246-14e2b3e5eafa/go.mod h1:s1hd2vVAEaFnZ1CnJvh9kVkqvfmT2emDYSI/hzaX+Oo=
 github.com/ProtossGenius/smn-cpp v0.0.0-20200605081320-4de0f87e059d/go.mod h1:LoCLyGaS0GC9cOD5dcBV1ULkRHF5txwVUg4eepcxgeg=
 github.com/ProtossGenius/smntools v0.0.0-20200520072714-534c87925479/go.mod h1:hUUzj3mblHxQNz1sNTi9k1ZbCRQbbGh6c170tVTrHbM=
 github.com/ProtossGenius/smntools v0.0.0-20200529112536-ce620f794186/go.mod h1:5XP6xb/nndSUIuO0zMtytzmk/vEwzF0obcBDuyh3OFs=
