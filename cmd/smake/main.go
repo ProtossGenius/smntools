@@ -67,7 +67,7 @@ func getInc(line string) string {
 		return ""
 	}
 
-	return line[:strings.LastIndex(line, ".h")] + ".o"
+	return strings.TrimSpace(line)
 }
 
 //SplitPath split path to dir and fileName.
@@ -93,6 +93,11 @@ func analysisRely(path string) *SMakeUnit {
 
 	for _, line := range strings.Split(code, "\n") {
 		inc := getInc(line)
+		if inc == "" {
+			continue
+		}
+
+		fmt.Println(dir + "/" + inc)
 
 		if smn_file.IsFileExist(dir + "/" + inc) {
 			res.Rely = append(res.Rely, inc)
@@ -172,6 +177,7 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	targetList := make([]string, 0, len(tList))
 	//write build one
 	for _, unit := range tList {
+		fmt.Println(unit.Target, " : ", len(unit.Rely), unit.Rely)
 		write(unit.Target+": %s %s", unit.Src, join(unit.Rely, " ", " \\\n"))
 		write("\t%s %s %s", CC, FLAGS, unit.Src)
 		targetList = append(targetList, unit.Target)
