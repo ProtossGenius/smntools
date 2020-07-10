@@ -97,8 +97,6 @@ func analysisRely(path string) *SMakeUnit {
 			continue
 		}
 
-		fmt.Println(dir + "/" + inc)
-
 		if smn_file.IsFileExist(dir + "/" + inc) {
 			res.Rely = append(res.Rely, inc)
 		}
@@ -157,9 +155,22 @@ func join(arr []string, j1, j2 string) string {
 	return strings.Join(ress, j2)
 }
 
+func dropLastBL(str string) string {
+	size := len(str)
+
+	for i := size - 1; i >= 0; i-- {
+		if str[i] != '\n' {
+			return str[:i+1] + "\n"
+		}
+	}
+
+	return str
+}
+
 //WriteToMakeFile write.
 func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	udHead, udTail := getUserDef(path)
+	udTail = dropLastBL(udTail)
 
 	err := smn_file.RemoveFileIfExist(path + "/makefile")
 	check(err)
@@ -177,7 +188,6 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	targetList := make([]string, 0, len(tList))
 	//write build one
 	for _, unit := range tList {
-		fmt.Println(unit.Target, " : ", len(unit.Rely), unit.Rely)
 		write(unit.Target+": %s %s", unit.Src, join(unit.Rely, " ", " \\\n"))
 		write("\t%s %s %s", CC, FLAGS, unit.Src)
 		targetList = append(targetList, unit.Target)
@@ -190,7 +200,11 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	write("sm_build_all: %s", join(targetList, " ", "\\\n"))
 
 	for _, info := range fileList {
-		if info.IsDir() && !strings.HasPrefix(info.Name(), ".") {
+		if strings.HasPrefix(info.Name(), ".") {
+			continue
+		}
+
+		if info.IsDir() || smn_file.IsFileExist(path+"/"+info.Name()+"/Makefile") {
 			write("\tcd %s && make sm_build_all", info.Name())
 		}
 	}
@@ -229,16 +243,26 @@ func dealDir(path string) {
 	WriteToMakeFile(path, tList)
 }
 
+func cleanDir(path string) {
+	WriteToMakeFile(path, nil)
+}
+
 func main() {
+	var clean bool
+
 	flag.StringVar(&CC, "cc", CC, "c compiler.")
 	flag.StringVar(&FLAGS, "flags", FLAGS, "c++ compile flags.")
+	flag.BoolVar(&clean, "clean", false, "is do clean action.")
 	flag.Parse()
 
-	if smn_file.IsFileExist("./build_pre.sh") {
+	var dirAction = dealDir
+	if clean {
+		dirAction = cleanDir
+	} else if smn_file.IsFileExist("./build_pre.sh") {
 		check(smn_exec.EasyDirExec(".", "sh", "./build_pre.sh"))
 	}
 
-	dealDir(".")
+	dirAction(".")
 
 	_, err := smn_file.DeepTraversalDir(".", func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
 		if !info.IsDir() {
@@ -249,7 +273,7 @@ func main() {
 			return smn_file.FILE_DO_FUNC_RESULT_NO_DEAL
 		}
 
-		dealDir(path)
+		dirAction(path)
 		return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
 	})
 
