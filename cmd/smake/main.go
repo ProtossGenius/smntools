@@ -7,7 +7,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ProtossGenius/SureMoonNet/basis/smn_exec"
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
 	"github.com/ProtossGenius/smntools/smnt/codedeal"
 )
@@ -196,28 +195,34 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	fileList, err := ioutil.ReadDir(path)
 	check(err)
 
-	//write build all
-	write("sm_build_all: %s", join(targetList, " ", "\\\n"))
-
+	cleanSubs := make([]string, 0, len(fileList))
+	dirIdx := 0
+	//sub dir.
 	for _, info := range fileList {
 		if strings.HasPrefix(info.Name(), ".") {
 			continue
 		}
 
 		if info.IsDir() || smn_file.IsFileExist(path+"/"+info.Name()+"/Makefile") {
+			//subdir's build
+			write("\nsm_build_subdir_%d:", dirIdx)
 			write("\tcd %s && make sm_build_all", info.Name())
-		}
-	}
-	//write clean_o
-	write("sm_clean_o:\n\trm -rf ./*.o")
 
-	for _, info := range fileList {
-		if info.IsDir() && !strings.HasPrefix(info.Name(), ".") {
+			targetList = append(targetList, fmt.Sprintf("sm_build_subdir_%d", dirIdx))
+			//subdir's clean.
+			write("\nsm_clean_subdir_%d:", dirIdx)
 			write("\tcd %s && make sm_clean_o", info.Name())
+
+			cleanSubs = append(cleanSubs, fmt.Sprintf("sm_clean_subdir_%d", dirIdx))
+			dirIdx++
 		}
 	}
-	//write
 
+	//write build all
+	write("sm_build_all: %s", join(targetList, " ", "\\\n"))
+	//write clean_o
+	write("sm_clean_o: %s\n\trm -rf ./*.o", join(cleanSubs, " ", "\\\n"))
+	//write Tail
 	write(udTail)
 }
 
@@ -243,24 +248,12 @@ func dealDir(path string) {
 	WriteToMakeFile(path, tList)
 }
 
-func cleanDir(path string) {
-	WriteToMakeFile(path, nil)
-}
-
 func main() {
-	var clean bool
-
 	flag.StringVar(&CC, "cc", CC, "c compiler.")
 	flag.StringVar(&FLAGS, "flags", FLAGS, "c++ compile flags.")
-	flag.BoolVar(&clean, "clean", false, "is do clean action.")
 	flag.Parse()
 
 	var dirAction = dealDir
-	if clean {
-		dirAction = cleanDir
-	} else if smn_file.IsFileExist("./build_pre.sh") {
-		check(smn_exec.EasyDirExec(".", "sh", "./build_pre.sh"))
-	}
 
 	dirAction(".")
 
