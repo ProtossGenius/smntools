@@ -29,6 +29,10 @@ var CXXEnd = []string{".c", ".cpp", ".cxx", ".cc"}
 var CC = "g++"
 var FLAGS = "-Wall -c"
 
+func isDir(path string) bool {
+	return smn_file.IsFileExist(path + "/.")
+}
+
 //asTarget .
 func asTarget(name string) string {
 	for _, end := range CXXEnd {
@@ -258,7 +262,7 @@ func main() {
 	dirAction(".")
 
 	_, err := smn_file.DeepTraversalDir(".", func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
-		if !info.IsDir() {
+		if !isDir(path) {
 			return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
 		}
 
