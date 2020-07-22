@@ -29,10 +29,6 @@ var CXXEnd = []string{".c", ".cpp", ".cxx", ".cc"}
 var CC = "g++"
 var FLAGS = "-Wall -c"
 
-func isDir(path string) bool {
-	return smn_file.IsFileExist(path + "/.")
-}
-
 //asTarget .
 func asTarget(name string) string {
 	for _, end := range CXXEnd {
@@ -213,11 +209,14 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 			write("\tcd %s && make sm_build_all", info.Name())
 
 			targetList = append(targetList, fmt.Sprintf("sm_build_subdir_%d", dirIdx))
-			//subdir's clean.
-			write("\nsm_clean_subdir_%d:", dirIdx)
-			write("\tcd %s && make sm_clean_o", info.Name())
 
-			cleanSubs = append(cleanSubs, fmt.Sprintf("sm_clean_subdir_%d", dirIdx))
+			if info.IsDir() {
+				//subdir's clean.
+				write("\nsm_clean_subdir_%d:", dirIdx)
+				write("\tcd %s && make sm_clean_o", info.Name())
+
+				cleanSubs = append(cleanSubs, fmt.Sprintf("sm_clean_subdir_%d", dirIdx))
+			}
 			dirIdx++
 		}
 	}
@@ -262,7 +261,7 @@ func main() {
 	dirAction(".")
 
 	_, err := smn_file.DeepTraversalDir(".", func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
-		if !isDir(path) {
+		if !info.IsDir() {
 			return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
 		}
 
