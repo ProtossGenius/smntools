@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 	"strings"
 
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
@@ -184,7 +185,7 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 
 	write(udHead)
 
-	targetList := make([]string, 0, len(tList))
+	targetList := make(sort.StringSlice, 0, len(tList))
 	//write build one
 	for _, unit := range tList {
 		write(unit.Target+": %s %s", unit.Src, join(unit.Rely, " ", " \\\n"))
@@ -195,8 +196,9 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	fileList, err := ioutil.ReadDir(path)
 	check(err)
 
-	cleanSubs := make([]string, 0, len(fileList))
-	buildSubs := make([]string, 0, len(fileList))
+	cleanSubs := make(sort.StringSlice, 0, len(fileList))
+	buildAllSubs := make(sort.StringSlice, 0, len(fileList))
+	buildSubs := make(sort.StringSlice, 0, len(fileList))
 	dirIdx := 0
 	//sub dir.
 	for _, info := range fileList {
@@ -206,9 +208,10 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 
 		if info.IsDir() || smn_file.IsFileExist(path+"/"+info.Name()+"/Makefile") {
 			//subdir's build
-			buildSubs = append(buildSubs, fmt.Sprintf("\t+make -C %s sm_build_all", info.Name()))
+			buildAllSubs = append(buildAllSubs, fmt.Sprintf("\t+make -C %s sm_build_all", info.Name()))
 
 			if info.IsDir() {
+				buildSubs = append(buildSubs, fmt.Sprintf("\t+make -C %s sm_build", info.Name()))
 				//subdir's clean.
 				cleanSubs = append(cleanSubs, fmt.Sprintf("\t+make -C %s sm_clean_o", info.Name()))
 			}
@@ -216,9 +219,17 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 		}
 	}
 
+	sort.Sort(targetList)
+	sort.Sort(cleanSubs)
+	sort.Sort(buildAllSubs)
+	sort.Sort(buildSubs)
+	//write build
+	write("sm_build: %s", join(targetList, " ", "\\\n"))
+	write(strings.Join(buildSubs, "\n"))
+	write("")
 	//write build all
 	write("sm_build_all: %s", join(targetList, " ", "\\\n"))
-	write(strings.Join(buildSubs, "\n"))
+	write(strings.Join(buildAllSubs, "\n"))
 	write("")
 	//write clean_o
 	write("sm_clean_o:\n\trm -rf ./*.o")
