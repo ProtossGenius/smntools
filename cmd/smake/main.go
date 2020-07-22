@@ -196,6 +196,7 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	check(err)
 
 	cleanSubs := make([]string, 0, len(fileList))
+	buildSubs := make([]string, 0, len(fileList))
 	dirIdx := 0
 	//sub dir.
 	for _, info := range fileList {
@@ -205,17 +206,11 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 
 		if info.IsDir() || smn_file.IsFileExist(path+"/"+info.Name()+"/Makefile") {
 			//subdir's build
-			write("\nsm_build_subdir_%d:", dirIdx)
-			write("\tcd %s && make sm_build_all", info.Name())
-
-			targetList = append(targetList, fmt.Sprintf("sm_build_subdir_%d", dirIdx))
+			buildSubs = append(buildSubs, fmt.Sprintf("\t+make -C %s sm_build_all", info.Name()))
 
 			if info.IsDir() {
 				//subdir's clean.
-				write("\nsm_clean_subdir_%d:", dirIdx)
-				write("\tcd %s && make sm_clean_o", info.Name())
-
-				cleanSubs = append(cleanSubs, fmt.Sprintf("sm_clean_subdir_%d", dirIdx))
+				cleanSubs = append(cleanSubs, fmt.Sprintf("\t+make -C %s sm_clean_o", info.Name()))
 			}
 			dirIdx++
 		}
@@ -223,8 +218,11 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 
 	//write build all
 	write("sm_build_all: %s", join(targetList, " ", "\\\n"))
+	write(strings.Join(buildSubs, "\n"))
+	write("")
 	//write clean_o
-	write("sm_clean_o: %s\n\trm -rf ./*.o", join(cleanSubs, " ", "\\\n"))
+	write("sm_clean_o:\n\trm -rf ./*.o")
+	write(strings.Join(cleanSubs, "\n"))
 	//write Tail
 	write(udTail)
 }
