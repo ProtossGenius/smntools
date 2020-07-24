@@ -22,7 +22,7 @@ func check(err error) {
 type SMakeUnit struct {
 	Target string
 	Src    string
-	Rely   []string
+	Rely   sort.StringSlice
 }
 
 //CXXEnd C & Cpp file's end.
@@ -188,6 +188,7 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	targetList := make(sort.StringSlice, 0, len(tList))
 	//write build one
 	for _, unit := range tList {
+		sort.Sort(unit.Rely)
 		write(unit.Target+": %s %s", unit.Src, join(unit.Rely, " ", " \\\n"))
 		write("\t%s %s %s", CC, FLAGS, unit.Src)
 		targetList = append(targetList, unit.Target)
