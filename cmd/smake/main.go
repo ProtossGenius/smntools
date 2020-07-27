@@ -7,6 +7,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
 	"github.com/ProtossGenius/smntools/smnt/codedeal"
@@ -29,6 +30,15 @@ type SMakeUnit struct {
 var CXXEnd = []string{".c", ".cpp", ".cxx", ".cc"}
 var CC = "g++"
 var FLAGS = "-Wall -c"
+var wg sync.WaitGroup
+var mutex sync.Mutex
+
+func println(a ...interface{}) (int, error) {
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	return fmt.Println(a...)
+}
 
 //asTarget .
 func asTarget(name string) string {
@@ -80,11 +90,10 @@ func SplitPath(path string) (dir, fileName string) {
 	return
 }
 
-//analysisRely get .cxx file's include rely.
-func analysisRely(path string) *SMakeUnit {
-	fmt.Println("[INFO] analysising ", path, "...")
-	dir, name := SplitPath(path)
-	res := &SMakeUnit{Src: name, Target: asTarget(name)}
+//getHeaderRely header may include header too .
+func getHeaderRely(path string, remMap map[string]bool) []string {
+	relys := []string{}
+	dir, _ := SplitPath(path)
 	data, err := smn_file.FileReadAll(path)
 	check(err)
 
@@ -97,10 +106,37 @@ func analysisRely(path string) *SMakeUnit {
 			continue
 		}
 
-		if smn_file.IsFileExist(dir + "/" + inc) {
-			res.Rely = append(res.Rely, inc)
+		incPath := dir + "/" + inc
+		if remMap[incPath] {
+			continue
+		}
+
+		if smn_file.IsFileExist(incPath) {
+			remMap[incPath] = true
+
+			relys = append(relys, inc)
+			subIncs := getHeaderRely(incPath, remMap)
+			subDir, _ := SplitPath(incPath)
+			prex := "./" + subDir[len(dir):] + "/"
+
+			for idx := range subIncs {
+				subIncs[idx] = prex + subIncs[idx]
+			}
+
+			relys = append(relys, subIncs...)
 		}
 	}
+
+	return relys
+}
+
+//analysisRely get .cxx file's include rely.
+func analysisRely(path string) *SMakeUnit {
+	println("[INFO] analysising ", path, "...")
+	_, name := SplitPath(path)
+	res := &SMakeUnit{Src: name, Target: asTarget(name)}
+	remMap := map[string]bool{}
+	res.Rely = getHeaderRely(path, remMap)
 
 	return res
 }
@@ -131,11 +167,11 @@ func getUserDef(path string) (head, tail string) {
 		}
 
 		if strings.HasPrefix(line, "##Tail") {
-			return head, strings.Join(list[idx:], "\n")
+			return head + "\n", "\n" + strings.Join(list[idx:], "\n")
 		}
 	}
 
-	return head, ""
+	return head + "\n", ""
 }
 
 func join(arr []string, j1, j2 string) string {
@@ -240,6 +276,8 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 }
 
 func dealDir(path string) {
+	defer wg.Done()
+
 	tList := []*SMakeUnit{}
 	fileList, err := ioutil.ReadDir(path)
 
@@ -268,7 +306,9 @@ func main() {
 
 	var dirAction = dealDir
 
-	dirAction(".")
+	wg.Add(1)
+
+	go dirAction(".")
 
 	_, err := smn_file.DeepTraversalDir(".", func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
 		if !info.IsDir() {
@@ -278,10 +318,12 @@ func main() {
 		if strings.HasPrefix(info.Name(), ".") {
 			return smn_file.FILE_DO_FUNC_RESULT_NO_DEAL
 		}
-
-		dirAction(path)
+		wg.Add(1)
+		go dirAction(path)
 		return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
 	})
 
 	check(err)
+
+	wg.Wait()
 }
