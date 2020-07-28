@@ -27,6 +27,7 @@ type SMakeLink struct {
 	Type string `json:"type"`
 	Path string `json:"path"`
 	Name string `json:"name"`
+	Cmd  string `json:"cmd"`
 }
 
 //SMakeLinks .
@@ -352,10 +353,27 @@ func MakeSLink(path string, cfg *SMakeLink) {
 			if hasError("git") {
 				return
 			}
+
+			cfg.Path = SMakeCfgGitDir + cfg.Path
 		}
 
 	default:
 		println("[ERROR] unkonw type: ", cfg.Type)
+	}
+
+	if cfg.Cmd != "" {
+		var arr []string
+		arr, err = codedeal.CmdAnalysis(cfg.Cmd)
+
+		hasError("analysis cmd")
+
+		if len(arr) == 0 {
+			return
+		}
+
+		err = smn_exec.EasyDirExec(cfg.Path, arr[0], arr[1:]...)
+
+		hasError("exec shell")
 	}
 }
 
