@@ -13,6 +13,8 @@ github.com/ProtossGenius/SureMoonNet v0.0.0-20200710040628-67450ec809c1 h1:oVAIk
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200710040628-67450ec809c1/go.mod h1:s1hd2vVAEaFnZ1CnJvh9kVkqvfmT2emDYSI/hzaX+Oo=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200717075223-39242ea5cc51 h1:P9E4EI9DYWlJAxHkjQHyxNKznxRi13DkLx8TjXtHg/w=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200717075223-39242ea5cc51/go.mod h1:s1hd2vVAEaFnZ1CnJvh9kVkqvfmT2emDYSI/hzaX+Oo=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200728051858-b09337c5004f h1:S/pvX/vhbLPHEaUrn8k1w66Slc8OsnPIv/lSAHmJsB8=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200728051858-b09337c5004f/go.mod h1:s1hd2vVAEaFnZ1CnJvh9kVkqvfmT2emDYSI/hzaX+Oo=
 github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8 h1:6XqaDnSAB7DDDQyNUEFpTeav3IMe1RJRRI/Yc06P2Dg=
 github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8/go.mod h1:lfe8umNoPd1yrGfKNOGicauiXZHKqIzXGD0Ol23kGHM=
 github.com/ProtossGenius/smn-cpp v0.0.0-20200605081320-4de0f87e059d/go.mod h1:LoCLyGaS0GC9cOD5dcBV1ULkRHF5txwVUg4eepcxgeg=
@@ -28,6 +30,7 @@ github.com/cosiner/argv v0.0.0-20170225145430-13bacc38a0a5/go.mod h1:p/NrK5tF6IC
 github.com/cpuguy83/go-md2man v1.0.10/go.mod h1:SmD6nW6nTyfqj6ABTjUi3V3JVMnlJmwcJI5acqYI6dE=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
@@ -75,6 +78,7 @@ github.com/peterh/liner v0.0.0-20170317030525-88609521dc4b/go.mod h1:xIteQHvHuaL
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/robertkrimen/otto v0.0.0-20191219234010-c382bd3c16ff h1:+6NUiITWwE5q1KO6SAfUX918c+Tab0+tGAM/mtdlUyA=
@@ -85,6 +89,7 @@ github.com/spf13/cobra v0.0.0-20170417170307-b6cb39589372/go.mod h1:1l0Ry5zgKvJa
 github.com/spf13/pflag v0.0.0-20170417173400-9e4c21054fa1/go.mod h1:DYY7MBk1bdzusC3SYhjObp+wFpr4gzcvqqNjLnInEg4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
+github.com/stretchr/testify v1.3.0 h1:TivCn/peBQ7UY8ooIcPgZFpTNSz0Q2U6UrFlUfqbe0Q=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/templexxx/cpu v0.0.1/go.mod h1:w7Tb+7qgcAlIyX4NhLuDKt78AHA5SzPmq0Wj6HiEnnk=
 github.com/templexxx/cpufeat v0.0.0-20180724012125-cef66df7f161/go.mod h1:wM7WEvslTq+iOEAMDLSzhVuOt5BRZ05WirO+b09GHQU=

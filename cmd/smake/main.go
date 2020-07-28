@@ -9,8 +9,11 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/ProtossGenius/SureMoonNet/basis/smn_exec"
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
 	"github.com/ProtossGenius/smntools/smnt/codedeal"
+	"github.com/ProtossGenius/smntools/smnt/smcfg"
+	jsoniter "github.com/json-iterator/go"
 )
 
 func check(err error) {
@@ -18,6 +21,16 @@ func check(err error) {
 		panic(err)
 	}
 }
+
+//SMakeLink .
+type SMakeLink struct {
+	Type string `json:"type"`
+	Path string `json:"path"`
+	Name string `json:"name"`
+}
+
+//SMakeLinks .
+type SMakeLinks []*SMakeLink
 
 /*SMakeUnit target and relys..*/
 type SMakeUnit struct {
@@ -30,14 +43,21 @@ type SMakeUnit struct {
 var CXXEnd = []string{".c", ".cpp", ".cxx", ".cc"}
 var CC = "g++"
 var FLAGS = "-Wall -c"
+var SLS = "sls.json" // symbol links config file's name
 var wg sync.WaitGroup
 var mutex sync.Mutex
 
-func println(a ...interface{}) (int, error) {
+var (
+	SMakeCfgDir     = smcfg.GetUserHome() + "/.smake/"
+	SMakeCfgGitDir  = SMakeCfgDir + "git/"
+	SMakeCfgWgetDir = SMakeCfgDir + "wget/"
+)
+
+func println(a ...interface{}) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	return fmt.Println(a...)
+	fmt.Println(a...)
 }
 
 //asTarget .
@@ -275,8 +295,109 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	write(udTail)
 }
 
+//MakeSLink .
+func MakeSLink(path string, cfg *SMakeLink) {
+	defer wg.Done()
+
+	var err error
+
+	hasError := func(action string) bool {
+		if err == nil {
+			return false
+		}
+
+		println("[ERROR] in MakeSLink, path is [", path, "],  error is [", err, "] reason is :", action)
+
+		return true
+	}
+
+	if cfg.Name == "" {
+		_, cfg.Name = SplitPath(cfg.Path)
+	}
+
+	switch strings.ToLower(cfg.Type) {
+	case "local", "l":
+		{
+			println("[INFO] make local symlink", cfg.Path, " ", path+"/"+cfg.Name)
+			err = os.Remove(path + "/" + cfg.Name)
+			hasError("delete ...")
+			err = os.Symlink(cfg.Path, path+"/"+cfg.Name)
+			if hasError("create Symlink") {
+				return
+			}
+		}
+	case "git", "g":
+		{
+			println("[INFO] make symlink", SMakeCfgGitDir+cfg.Path, path+"/"+cfg.Name)
+			err = os.Remove(path + "/" + cfg.Name)
+			hasError("delete... in git")
+			err = os.Symlink(SMakeCfgGitDir+cfg.Path, path+"/"+cfg.Name)
+
+			const gitDownSize = 3
+			//split git-path   github.com/user/r-name/subdir1/s2/...
+			list := strings.Split(cfg.Path, "/")
+			if len(list) < gitDownSize {
+				println("[ERROR] config path error: ", cfg)
+				return
+			}
+			localPath := SMakeCfgGitDir + strings.Join(list[:3], "/")
+			println("downloading ", cfg.Path, "...")
+			if smn_file.IsFileExist(localPath) {
+				err = smn_exec.EasyDirExec(localPath, "git", "pull")
+			} else {
+				err = smn_exec.EasyDirExec(path, "git", "clone", "https://"+strings.Join(list[:3], "/"), localPath)
+			}
+
+			println("download", cfg.Path, "finish.")
+			if hasError("git") {
+				return
+			}
+		}
+
+	default:
+		println("[ERROR] unkonw type: ", cfg.Type)
+	}
+}
+
+//ThirdPartDir import 3rd_part as SymbolLinks.
+func ThirdPartDir(path string) {
+	defer wg.Done()
+
+	data, err := smn_file.FileReadAll(path + "/" + SLS)
+	check(err)
+
+	cfgs := &[]*SMakeLink{}
+	err = jsoniter.Unmarshal(data, cfgs)
+	check(err)
+
+	for _, cfg := range *cfgs {
+		wg.Add(1)
+
+		go MakeSLink(path, cfg)
+	}
+}
+
+//InitSMakeCfgDir if dir not exist create it.
+func InitSMakeCfgDir() {
+	checkDir := func(path string) {
+		if !smn_file.IsFileExist(path) {
+			check(os.MkdirAll(path, os.ModePerm))
+		}
+	}
+
+	checkDir(SMakeCfgDir)
+	checkDir(SMakeCfgGitDir)
+	checkDir(SMakeCfgWgetDir)
+}
+
 func dealDir(path string) {
 	defer wg.Done()
+
+	if smn_file.IsFileExist(path + "/" + SLS) {
+		wg.Add(1)
+
+		go ThirdPartDir(path)
+	}
 
 	tList := []*SMakeUnit{}
 	fileList, err := ioutil.ReadDir(path)
@@ -303,6 +424,7 @@ func main() {
 	flag.StringVar(&CC, "cc", CC, "c compiler.")
 	flag.StringVar(&FLAGS, "flags", FLAGS, "c++ compile flags.")
 	flag.Parse()
+	InitSMakeCfgDir()
 
 	var dirAction = dealDir
 
