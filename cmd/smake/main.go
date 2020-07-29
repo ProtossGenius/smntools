@@ -24,14 +24,12 @@ func check(err error) {
 
 //SMakeLink .
 type SMakeLink struct {
-	Type string `json:"type"`
-	Path string `json:"path"`
-	Name string `json:"name"`
-	Cmd  string `json:"cmd"`
+	Type      string   `json:"type"`
+	Path      string   `json:"path"`
+	Name      string   `json:"name"`
+	CmdTarget []string `json:"cmd_target"`
+	CmdLocal  []string `json:"cmd_local"`
 }
-
-//SMakeLinks .
-type SMakeLinks []*SMakeLink
 
 /*SMakeUnit target and relys..*/
 type SMakeUnit struct {
@@ -361,20 +359,40 @@ func MakeSLink(path string, cfg *SMakeLink) {
 		println("[ERROR] unkonw type: ", cfg.Type)
 	}
 
-	if cfg.Cmd != "" {
-		var arr []string
-		arr, err = codedeal.CmdAnalysis(cfg.Cmd)
+	for _, cmd := range cfg.CmdTarget {
+		err = runCmd(cmd, cfg.Path)
 
-		hasError("analysis cmd")
-
-		if len(arr) == 0 {
+		if hasError("run target cmd") {
 			return
 		}
-
-		err = smn_exec.EasyDirExec(cfg.Path, arr[0], arr[1:]...)
-
-		hasError("exec shell")
 	}
+
+	for _, cmd := range cfg.CmdLocal {
+		err = runCmd(cmd, path)
+
+		if hasError("run local cmd") {
+			return
+		}
+	}
+}
+
+func runCmd(cmd string, path string) (err error) {
+	if cmd == "" {
+		return
+	}
+
+	var arr []string
+	arr, err = codedeal.CmdAnalysis(cmd)
+
+	if err != nil {
+		return err
+	}
+
+	if len(arr) == 0 {
+		return nil
+	}
+
+	return smn_exec.EasyDirExec(path, arr[0], arr[1:]...)
 }
 
 //ThirdPartDir import 3rd_part as SymbolLinks.

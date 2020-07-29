@@ -22,8 +22,9 @@ func CmdAnalysis(cmd string) ([]string, error) {
 	}()
 
 	rc := sm.GetResultChan()
-	strArr := make([]string, 0, len(rc))
-	lastSymb := false
+	strArr := make([]string, 1)
+	shouldAppend := false
+	first := true
 
 	for {
 		lp := <-rc
@@ -43,17 +44,22 @@ func CmdAnalysis(cmd string) ([]string, error) {
 		lexP := lex_pgl.ToLexProduct(lp)
 
 		if lexP.ProductType() == int(lex_pgl.PGLA_PRODUCT_SPACE) {
-			lastSymb = false
+			if !first {
+				shouldAppend = true
+			}
+
 			continue
 		}
 
-		if lastSymb {
-			strArr[len(strArr)-1] += lexP.Value
-		} else {
+		first = false
+
+		if shouldAppend {
 			strArr = append(strArr, lexP.Value)
+		} else {
+			strArr[len(strArr)-1] += lexP.Value
 		}
 
-		lastSymb = (lexP.ProductType() == int(lex_pgl.PGLA_PRODUCT_SYMBOL))
+		shouldAppend = false
 	}
 
 	return strArr, nil
