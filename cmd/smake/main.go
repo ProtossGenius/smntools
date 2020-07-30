@@ -342,6 +342,16 @@ func MakeSLink(path string, cfg *SMakeLink) {
 			localPath := SMakeCfgGitDir + strings.Join(list[:3], "/")
 			println("downloading ", cfg.Path, "...")
 			if smn_file.IsFileExist(localPath) {
+				err = smn_exec.EasyDirExec(localPath, "git", "checkout", ".")
+				if hasError("git checkout .") {
+					return
+				}
+
+				err = smn_exec.EasyDirExec(localPath, "git", "clean", "-xfd")
+				if hasError("git clean -xfd") {
+					return
+				}
+
 				err = smn_exec.EasyDirExec(localPath, "git", "pull")
 			} else {
 				err = smn_exec.EasyDirExec(path, "git", "clone", "https://"+strings.Join(list[:3], "/"), localPath)
