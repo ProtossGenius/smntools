@@ -29,6 +29,7 @@ type SMakeLink struct {
 	Name      string   `json:"name"`
 	CmdTarget []string `json:"cmd_target"`
 	CmdLocal  []string `json:"cmd_local"`
+	Update    bool     `json:"update"`
 }
 
 /*SMakeUnit target and relys..*/
@@ -341,7 +342,9 @@ func MakeSLink(path string, cfg *SMakeLink) {
 			}
 			localPath := SMakeCfgGitDir + strings.Join(list[:3], "/")
 			println("downloading ", cfg.Path, "...")
-			if smn_file.IsFileExist(localPath) {
+			if !smn_file.IsFileExist(localPath) {
+				err = smn_exec.EasyDirExec(path, "git", "clone", "https://"+strings.Join(list[:3], "/"), localPath)
+			} else if cfg.Update {
 				err = smn_exec.EasyDirExec(localPath, "git", "checkout", ".")
 				if hasError("git checkout .") {
 					return
@@ -353,8 +356,6 @@ func MakeSLink(path string, cfg *SMakeLink) {
 				}
 
 				err = smn_exec.EasyDirExec(localPath, "git", "pull")
-			} else {
-				err = smn_exec.EasyDirExec(path, "git", "clone", "https://"+strings.Join(list[:3], "/"), localPath)
 			}
 
 			println("download", cfg.Path, "finish.")
