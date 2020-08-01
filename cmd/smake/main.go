@@ -139,8 +139,12 @@ func getHeaderRely(path string, remMap map[string]bool) []string {
 			subDir, _ := SplitPath(incPath)
 			prex := "./" + subDir[len(dir):] + "/"
 
+			if subDir[len(dir):] == "/" || subDir == dir {
+				prex = "./"
+			}
+
 			for idx := range subIncs {
-				subIncs[idx] = prex + subIncs[idx]
+				subIncs[idx] = strings.ReplaceAll(prex+subIncs[idx], "/./", "/")
 			}
 
 			relys = append(relys, subIncs...)
