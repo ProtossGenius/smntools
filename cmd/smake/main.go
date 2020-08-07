@@ -45,12 +45,35 @@ var FLAGS = "-Wall -c"
 var SLS = "sls.json" // symbol links config file's name
 var wg sync.WaitGroup
 var mutex sync.Mutex
+var DealedPath = map[string]bool{}
 
 var (
 	SMakeCfgDir     = smcfg.GetUserHome() + "/.smake/"
 	SMakeCfgGitDir  = SMakeCfgDir + "git/"
 	SMakeCfgWgetDir = SMakeCfgDir + "wget/"
 )
+
+func isNeedDown(path string) bool {
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	if DealedPath[path] {
+		return false
+	}
+
+	DealedPath[path] = true
+
+	return true
+}
+
+func letPathShort(path string) string {
+	for strings.Contains(path, "//") || strings.Contains(path, "/./") {
+		path = strings.ReplaceAll(path, "//", "/")
+		path = strings.ReplaceAll(path, "/./", "/")
+	}
+
+	return path
+}
 
 func println(a ...interface{}) {
 	mutex.Lock()
@@ -59,7 +82,6 @@ func println(a ...interface{}) {
 	fmt.Println(a...)
 }
 
-//asTarget .
 func asTarget(name string) string {
 	for _, end := range CXXEnd {
 		if !strings.HasSuffix(name, end) {
@@ -143,7 +165,7 @@ func getHeaderRely(path string, remMap map[string]bool) []string {
 			}
 
 			for idx := range subIncs {
-				subIncs[idx] = strings.ReplaceAll(prex+subIncs[idx], "/./", "/")
+				subIncs[idx] = letPathShort(prex + subIncs[idx])
 			}
 
 			relys = append(relys, subIncs...)
@@ -186,15 +208,15 @@ func getUserDef(path string) (head, tail string) {
 
 	for idx, line := range list {
 		if strings.HasPrefix(line, "##Head") {
-			head = strings.Join(list[:idx+1], "\n")
+			head = strings.Join(list[:idx+1], "\n") + "\n"
 		}
 
 		if strings.HasPrefix(line, "##Tail") {
-			return head + "\n", "\n" + strings.Join(list[idx:], "\n")
+			return head, "\n" + strings.Join(list[idx:], "\n")
 		}
 	}
 
-	return head + "\n", ""
+	return head, ""
 }
 
 func join(arr []string, j1, j2 string) string {
@@ -322,8 +344,7 @@ func MakeSLink(path string, cfg *SMakeLink) {
 	case "local", "l":
 		{
 			println("[INFO] make local symlink", cfg.Path, " ", path+"/"+cfg.Name)
-			err = os.Remove(path + "/" + cfg.Name)
-			hasError("delete ...")
+			_ = os.Remove(path + "/" + cfg.Name)
 			err = os.Symlink(cfg.Path, path+"/"+cfg.Name)
 			if hasError("create Symlink") {
 				return
@@ -332,10 +353,12 @@ func MakeSLink(path string, cfg *SMakeLink) {
 	case "git", "g":
 		{
 			println("[INFO] make symlink", SMakeCfgGitDir+cfg.Path, path+"/"+cfg.Name)
-			err = os.Remove(path + "/" + cfg.Name)
-			hasError("delete... in git")
+			_ = os.Remove(path + "/" + cfg.Name)
 			err = os.Symlink(SMakeCfgGitDir+cfg.Path, path+"/"+cfg.Name)
 
+			if !isNeedDown(cfg.Path) {
+				break
+			}
 			const gitDownSize = 3
 			//split git-path   github.com/user/r-name/subdir1/s2/...
 			list := strings.Split(cfg.Path, "/")
