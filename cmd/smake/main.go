@@ -388,14 +388,13 @@ func MakeSLink(path string, cfg *SMakeLink) {
 			if hasError("git") {
 				return
 			}
-
-			cfg.Path = SMakeCfgGitDir + cfg.Path
 		}
 
 	default:
 		println("[ERROR] unkonw type: ", cfg.Type)
 	}
 
+	cfg.Path = SMakeCfgGitDir + cfg.Path
 	for _, cmd := range cfg.CmdTarget {
 		err = runCmd(cmd, cfg.Path)
 
