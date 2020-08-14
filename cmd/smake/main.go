@@ -314,7 +314,7 @@ func WriteToMakeFile(path string, tList []*SMakeUnit) {
 	write(strings.Join(buildAllSubs, "\n"))
 	write("")
 	//write clean_o
-	write("sm_clean_o:\n\trm -rf ./*.o")
+	write("sm_clean_o:\n\trm -rf ./*.o ./run.main")
 	write(strings.Join(cleanSubs, "\n"))
 	//write Tail
 	write(udTail)
