@@ -53,11 +53,20 @@ func main() {
 			fmt.Println(err)
 		}
 	}()
+
 	go RunSvr()
 	time.Sleep(1 * time.Second)
+
 	conn, err := net.Dial("tcp", "127.0.0.1:900")
 	check(err)
+
 	client := clt_rpc_smntitf.NewCltRpcHelloItf(smn_rpc.NewMessageAdapter(conn))
-	fmt.Println(client.Hello("hello"))
-	fmt.Println(client.Hello(""))
+	client.Hello("hello", func(str string) {
+		fmt.Println(str)
+	})
+	client.Hello("", func(str string) {
+		fmt.Println(str)
+	})
+
+	time.Sleep(1 * time.Second)
 }
