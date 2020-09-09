@@ -74,17 +74,21 @@ func main() {
 			fmt.Println(err)
 		}
 	}()
+
 	var wg sync.WaitGroup
+
 	go RunSvr()
+
 	time.Sleep(1 * time.Second)
 
 	conn, err := net.Dial("tcp", "127.0.0.1:900")
 	check(err)
 
 	client := clt_rpc_smntitf.NewCltRpcHelloItf(smn_rpc.NewMessageAdapter(conn), 10000)
+
 	for i := 0; i < 10000; i++ {
 		wg.Add(1)
-		client.Hello("hello", func(str string) {
+		client.Hello("world", func(str string) {
 			wg.Done()
 		})
 	}
