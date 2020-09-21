@@ -23,7 +23,10 @@ c_gogopb: #change pb to google.golang ver.
 c_smake:
 	cd ./cmd/smake && go install 
 
-install: auto_code  c_smcfg  c_smnrpc_autocode c_smwget  c_gogopb c_smake
+c_smdcatalog:
+	cd ./cmd/smdcatalog && go install
+
+install: auto_code  c_smcfg  c_smnrpc_autocode c_smwget  c_gogopb c_smake c_smdcatalog 	
 
 c_smcfg: # a config tool
 	cd ./cmd/smcfg && go install 
