@@ -91,10 +91,10 @@ func calcCatalog(path string, dirs []os.FileInfo) []string {
 			}
 
 			subCatalogs = append(subCatalogs,
-				asLink(getTitle(readmePath)+" -> <dir>"+info.Name(), "./"+info.Name()+"/"+ConstReadmdFileName))
+				asLink(getTitle(readmePath)+" -> \\<dir>"+info.Name(), "./"+info.Name()+"/"+ConstReadmdFileName))
 		} else if strings.HasSuffix(info.Name(), ".md") && info.Name() != ConstReadmdFileName {
 			catalogs = append(catalogs,
-				asLink(getTitle(path+smn_file.PathSep+info.Name())+" -> <file>"+info.Name(), "./"+info.Name()))
+				asLink(getTitle(path+smn_file.PathSep+info.Name())+" -> \\<file>"+info.Name(), "./"+info.Name()))
 		}
 	}
 
