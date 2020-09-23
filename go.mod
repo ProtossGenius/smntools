@@ -3,11 +3,10 @@ module github.com/ProtossGenius/smntools
 go 1.14
 
 require (
-	github.com/ProtossGenius/SureMoonNet v0.0.0-20200918123625-e6755863375b
-	github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8
-	github.com/ProtossGenius/smn-cpp v0.0.0-20200605081320-4de0f87e059d // indirect
+	github.com/ProtossGenius/SureMoonNet v0.0.0-20200923055352-0a0afc219aa4
+	github.com/ProtossGenius/pglang v0.0.0-20200808150637-5881d210e079
 	github.com/ProtossGenius/srfile v0.0.0-20200601032907-0258f7e1b3ac // indirect
-	github.com/golang/protobuf v1.4.1
+	github.com/golang/protobuf v1.4.2
 	github.com/json-iterator/go v1.1.9
 	google.golang.org/protobuf v1.25.0
 )
