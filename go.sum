@@ -43,6 +43,8 @@ github.com/ProtossGenius/SureMoonNet v0.0.0-20200923055352-0a0afc219aa4 h1:ZciZJ
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200923055352-0a0afc219aa4/go.mod h1:HhO2evNCWgr+uw5S+yAkx/I/xAGiSCCaZq+pj4x7xF0=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200927093349-f5aa9fcbd436 h1:k1jXI0u3eb73VWn8anjZDM291QMKpOgEzJDXsNB/O/Y=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200927093349-f5aa9fcbd436/go.mod h1:HhO2evNCWgr+uw5S+yAkx/I/xAGiSCCaZq+pj4x7xF0=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200928032100-b7d54f4b0b10 h1:ATgNu5Jt4ZWG0Ba/j/JIZwlFZMfy/uM6V1QXbKtKD7Q=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20200928032100-b7d54f4b0b10/go.mod h1:HhO2evNCWgr+uw5S+yAkx/I/xAGiSCCaZq+pj4x7xF0=
 github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8 h1:6XqaDnSAB7DDDQyNUEFpTeav3IMe1RJRRI/Yc06P2Dg=
 github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8/go.mod h1:lfe8umNoPd1yrGfKNOGicauiXZHKqIzXGD0Ol23kGHM=
 github.com/ProtossGenius/pglang v0.0.0-20200808150637-5881d210e079 h1:a3iHZU7BfMygG0uWjn8yz6zrhPcqYc8RR1VN7vgiUfg=
