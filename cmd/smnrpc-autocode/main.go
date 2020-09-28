@@ -199,15 +199,19 @@ func main() {
 	flag.StringVar(&cfg, "cfg", "./auto-code-cfg.json", "a config file to describ smnrpc-autocode should do what.")
 	flag.BoolVar(&doc, "doc", false, "show the doc about cfg file.")
 	flag.BoolVar(&example, "example", false, "output a example config.")
+	flag.IntVar(&itf2rpc.GoAsynClientRoutines, "aclt_routines", itf2rpc.GoAsynClientRoutines,
+		"how many routines to deal with async client's result callback")
 	flag.Parse()
 
 	if doc {
 		printDoc()
+
 		return
 	}
 
 	if example {
 		fmt.Print(JSONConfigStr)
+
 		return
 	}
 
