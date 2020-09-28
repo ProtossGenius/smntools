@@ -4,13 +4,13 @@
 
 # Catalog
 ---
-[<<< last page](../README.md)
+[<<< upper page](../README.md)
 ---
 
 # SubCatalog
 
-* [代码处理 -> \<dir>codedeal](./codedeal/README.md)
-* [smcfg所用到的一些常量 -> \<dir>smcfg](./smcfg/README.md)
+* [\<dir>codedeal -> 代码处理](./codedeal/README.md)
+* [\<dir>smcfg -> smcfg所用到的一些常量](./smcfg/README.md)
 ---
-[<<< last page](../README.md)
+[<<< upper page](../README.md)
 ---

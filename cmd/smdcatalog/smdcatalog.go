@@ -76,7 +76,7 @@ func calcCatalog(path string, dirs []os.FileInfo) []string {
 	addLastPage := func() {
 		if smn_file.IsFileExist(path + ps + ".." + ps + ConstReadmdFileName) {
 			catalogs = append(catalogs, "---")
-			catalogs = append(catalogs, fmt.Sprintf("[%s](%s)", "<<< last page", "../"+ConstReadmdFileName))
+			catalogs = append(catalogs, fmt.Sprintf("[%s](%s)", "<<< upper page", "../"+ConstReadmdFileName))
 			catalogs = append(catalogs, "---")
 		}
 	}
@@ -91,10 +91,10 @@ func calcCatalog(path string, dirs []os.FileInfo) []string {
 			}
 
 			subCatalogs = append(subCatalogs,
-				asLink(getTitle(readmePath)+" -> \\<dir>"+info.Name(), "./"+info.Name()+"/"+ConstReadmdFileName))
+				asLink("\\<dir>"+info.Name()+" -> "+getTitle(readmePath), "./"+info.Name()+"/"+ConstReadmdFileName))
 		} else if strings.HasSuffix(info.Name(), ".md") && info.Name() != ConstReadmdFileName {
 			catalogs = append(catalogs,
-				asLink(getTitle(path+smn_file.PathSep+info.Name())+" -> \\<file>"+info.Name(), "./"+info.Name()))
+				asLink("\\<file>"+info.Name()+" -> "+getTitle(path+smn_file.PathSep+info.Name()), "./"+info.Name()))
 		}
 	}
 

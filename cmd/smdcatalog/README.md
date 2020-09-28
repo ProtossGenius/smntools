@@ -6,11 +6,11 @@
 
 # Catalog
 ---
-[<<< last page](../README.md)
+[<<< upper page](../README.md)
 ---
 
 # SubCatalog
 
 ---
-[<<< last page](../README.md)
+[<<< upper page](../README.md)
 ---

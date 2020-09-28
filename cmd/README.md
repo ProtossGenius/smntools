@@ -4,20 +4,20 @@
 
 # Catalog
 ---
-[<<< last page](../README.md)
+[<<< upper page](../README.md)
 ---
 
 # SubCatalog
 
-* [安全端口转发 -> \<dir>asppl](./asppl/README.md)
-* [实时日志查看工具 -> \<dir>dirtail](./dirtail/README.md)
-* [将github/protobuf 替换为google/protobuf -> \<dir>gogopb](./gogopb/README.md)
-* [C++的Makefile生成工具 -> \<dir>smake](./smake/README.md)
-* [环境配建工具 -> \<dir>smcfg](./smcfg/README.md)
-* [文档目录生成工具 -> \<dir>smdcatalog](./smdcatalog/README.md)
-* [[待删] 一个go get 工具 -> \<dir>smgoget](./smgoget/README.md)
-* [SMNRPC 的一键生成工具 -> \<dir>smnrpc-autocode](./smnrpc-autocode/README.md)
-* [wget的套壳工具 -> \<dir>smwget](./smwget/README.md)
+* [\<dir>asppl -> 安全端口转发](./asppl/README.md)
+* [\<dir>dirtail -> 实时日志查看工具](./dirtail/README.md)
+* [\<dir>gogopb -> 将github/protobuf 替换为google/protobuf](./gogopb/README.md)
+* [\<dir>smake -> C++的Makefile生成工具](./smake/README.md)
+* [\<dir>smcfg -> 环境配建工具](./smcfg/README.md)
+* [\<dir>smdcatalog -> 文档目录生成工具](./smdcatalog/README.md)
+* [\<dir>smgoget -> [待删] 一个go get 工具](./smgoget/README.md)
+* [\<dir>smnrpc-autocode -> SMNRPC 的一键生成工具](./smnrpc-autocode/README.md)
+* [\<dir>smwget -> wget的套壳工具](./smwget/README.md)
 ---
-[<<< last page](../README.md)
+[<<< upper page](../README.md)
 ---
