@@ -122,6 +122,22 @@ func do_install(cfgName string) error {
 				continue
 			}
 
+			// watch what real need to rely.
+			if spls := strings.Split(line, "|"); len(spls) > 1 {
+				osn := issue()
+				line = spls[0]
+				ignore := true
+				for _, tOs := range strings.Split(spls[1], ",") {
+					if tOs == osn {
+						ignore = false
+					}
+				}
+
+				if ignore {
+					continue
+				}
+			}
+
 			if !smn_file.IsFileExist(cfgPath + line) {
 				return fmt.Errorf("No such config %s ", line)
 			}
@@ -164,6 +180,18 @@ func registe(name, usage string) {
 }
 
 func main() {
+	// check if the version more than .smcfg need.
+	if smn_file.IsFileExist(smcfg.GetCfgPath() + "/less.ver") {
+		datas, err := smn_file.FileReadAll(smcfg.GetCfgPath() + "/less.ver")
+		if err == nil {
+			lessVer := new(smn_flag.Version).FromString(string(datas))
+			if Version.Less(lessVer) {
+				panic(fmt.Sprintf("need new smcfg, need version: %s, current version %s", lessVer.ToString(), Version.ToString()))
+			}
+		}
+	}
+
+	smn_flag.RegisterVersion("smcfg", Version, "product by ProtossGenius/smntools")
 	flag.BoolVar(&force, "f", force, "force excute. ")
 	smn_flag.RegisterString("get",
 		fmt.Sprintf("git path and install it to path[%s],   -f means delete old CfgPath ", smcfg.GetCfgPath()),
