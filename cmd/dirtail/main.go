@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -88,7 +89,7 @@ func printTail(lastSize int64, path string) {
 
 		print(string(buffer[:n]))
 
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			break
 		}
 
@@ -178,8 +179,11 @@ func main() {
 
 	ExtList = strings.Split(Exts, "|")
 	dirList := strings.Split(Dirs, "|")
+	ticker := time.NewTicker(time.Duration(Interval) * time.Millisecond)
 
 	for {
+		<-ticker.C
+
 		for _, dir := range dirList {
 			AnalysisDir(dir)
 		}
