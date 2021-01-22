@@ -3,7 +3,7 @@ module github.com/ProtossGenius/smntools
 go 1.14
 
 require (
-	github.com/ProtossGenius/SureMoonNet v0.0.0-20201218063202-acc2c9884990
+	github.com/ProtossGenius/SureMoonNet v0.0.0-20210122154146-6cf3ce452acf
 	github.com/ProtossGenius/pglang v0.0.0-20200808150637-5881d210e079
 	github.com/ProtossGenius/srfile v0.0.0-20200601032907-0258f7e1b3ac // indirect
 	github.com/golang/protobuf v1.4.2

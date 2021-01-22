@@ -55,12 +55,14 @@ github.com/ProtossGenius/SureMoonNet v0.0.0-20200929103921-07c004789405 h1:NgsEH
 github.com/ProtossGenius/SureMoonNet v0.0.0-20200929103921-07c004789405/go.mod h1:HhO2evNCWgr+uw5S+yAkx/I/xAGiSCCaZq+pj4x7xF0=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20201218063202-acc2c9884990 h1:lmepKrsM052Uyr+IUgPVl6WZ/UJvG50/GkGcWM6Xj9Q=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20201218063202-acc2c9884990/go.mod h1:HhO2evNCWgr+uw5S+yAkx/I/xAGiSCCaZq+pj4x7xF0=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20210122152944-8e0fa1767087 h1:rFJYsZbS+h92xZkf7r88pPvmD1dzV9Hg1v+DHXAvEe8=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20210122152944-8e0fa1767087/go.mod h1:HhO2evNCWgr+uw5S+yAkx/I/xAGiSCCaZq+pj4x7xF0=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20210122154146-6cf3ce452acf h1:deNIyXv38nzoz/lkw8/Cb0VsLq65TQH7WKIjANK4FlY=
+github.com/ProtossGenius/SureMoonNet v0.0.0-20210122154146-6cf3ce452acf/go.mod h1:HhO2evNCWgr+uw5S+yAkx/I/xAGiSCCaZq+pj4x7xF0=
 github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8 h1:6XqaDnSAB7DDDQyNUEFpTeav3IMe1RJRRI/Yc06P2Dg=
 github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8/go.mod h1:lfe8umNoPd1yrGfKNOGicauiXZHKqIzXGD0Ol23kGHM=
 github.com/ProtossGenius/pglang v0.0.0-20200808150637-5881d210e079 h1:a3iHZU7BfMygG0uWjn8yz6zrhPcqYc8RR1VN7vgiUfg=
 github.com/ProtossGenius/pglang v0.0.0-20200808150637-5881d210e079/go.mod h1:UMxUA4xIUoRUc3ig5iWm3gcpbjcvUAAnyHTJSVyWWFg=
-github.com/ProtossGenius/smn-cpp v0.0.0-20200605081320-4de0f87e059d/go.mod h1:LoCLyGaS0GC9cOD5dcBV1ULkRHF5txwVUg4eepcxgeg=
-github.com/ProtossGenius/smn-cpp v0.0.0-20200805043758-9668faa4fe3f/go.mod h1:LoCLyGaS0GC9cOD5dcBV1ULkRHF5txwVUg4eepcxgeg=
 github.com/ProtossGenius/smntools v0.0.0-20200520072714-534c87925479/go.mod h1:hUUzj3mblHxQNz1sNTi9k1ZbCRQbbGh6c170tVTrHbM=
 github.com/ProtossGenius/smntools v0.0.0-20200529112536-ce620f794186/go.mod h1:5XP6xb/nndSUIuO0zMtytzmk/vEwzF0obcBDuyh3OFs=
 github.com/ProtossGenius/smntools v0.0.0-20200803070554-cfd66ec81b21/go.mod h1:cUzo+o0PwEApVPL/R3qEfVfgUV/D2zUba/aZmVeaEsM=
