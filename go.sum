@@ -63,6 +63,8 @@ github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8 h1:6XqaDnSAB7
 github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8/go.mod h1:lfe8umNoPd1yrGfKNOGicauiXZHKqIzXGD0Ol23kGHM=
 github.com/ProtossGenius/pglang v0.0.0-20200808150637-5881d210e079 h1:a3iHZU7BfMygG0uWjn8yz6zrhPcqYc8RR1VN7vgiUfg=
 github.com/ProtossGenius/pglang v0.0.0-20200808150637-5881d210e079/go.mod h1:UMxUA4xIUoRUc3ig5iWm3gcpbjcvUAAnyHTJSVyWWFg=
+github.com/ProtossGenius/pglang v0.0.0-20210122154320-6de2d45b7992 h1:dRNOQrRu22rIYNxUYkEXjD29Zzn/4P+gJQUjp7RIjso=
+github.com/ProtossGenius/pglang v0.0.0-20210122154320-6de2d45b7992/go.mod h1:xkf2cUc3RxKfwYldQUQ4hB6HtK6JphprRYKWs5vLvi4=
 github.com/ProtossGenius/smntools v0.0.0-20200520072714-534c87925479/go.mod h1:hUUzj3mblHxQNz1sNTi9k1ZbCRQbbGh6c170tVTrHbM=
 github.com/ProtossGenius/smntools v0.0.0-20200529112536-ce620f794186/go.mod h1:5XP6xb/nndSUIuO0zMtytzmk/vEwzF0obcBDuyh3OFs=
 github.com/ProtossGenius/smntools v0.0.0-20200803070554-cfd66ec81b21/go.mod h1:cUzo+o0PwEApVPL/R3qEfVfgUV/D2zUba/aZmVeaEsM=
