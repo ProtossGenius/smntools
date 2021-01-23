@@ -12,11 +12,11 @@ import (
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_data"
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_err"
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
-	"github.com/ProtossGenius/SureMoonNet/smn/analysis/smn_rpc_itf"
-	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/goitf2lang"
-	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/itf2proto"
-	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/itf2rpc"
-	"github.com/ProtossGenius/SureMoonNet/smn/proto_tool/proto_compile"
+	"github.com/ProtossGenius/smnric/analysis/smn_rpc_itf"
+	"github.com/ProtossGenius/smnric/proto_tool/goitf2lang"
+	"github.com/ProtossGenius/smnric/proto_tool/itf2proto"
+	"github.com/ProtossGenius/smnric/proto_tool/itf2rpc"
+	"github.com/ProtossGenius/smnric/proto_tool/proto_compile"
 )
 
 /*

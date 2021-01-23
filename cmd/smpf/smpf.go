@@ -10,7 +10,7 @@ import (
 
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_file"
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_net"
-	"github.com/ProtossGenius/SureMoonNet/smn/net_libs/smn_port_forward"
+	"github.com/ProtossGenius/smnric/net_libs/smn_port_forward"
 )
 
 func check(err error) {

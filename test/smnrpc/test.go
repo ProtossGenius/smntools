@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_net"
-	"github.com/ProtossGenius/SureMoonNet/smn/net_libs/smn_rpc"
+	"github.com/ProtossGenius/smnric/net_libs/smn_rpc"
 	"github.com/ProtossGenius/smntools/rpc_nitf/cltrpc/clt_rpc_smntitf"
 	"github.com/ProtossGenius/smntools/rpc_nitf/svrrpc/svr_rpc_smntitf"
 	"google.golang.org/protobuf/proto"
