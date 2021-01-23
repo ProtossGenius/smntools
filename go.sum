@@ -32,6 +32,8 @@ github.com/ProtossGenius/pglang v0.0.0-20200717110701-36e48cc808c8/go.mod h1:lfe
 github.com/ProtossGenius/pglang v0.0.0-20210122152052-c483511ecc00/go.mod h1:wpJRhqJKp/XtPdmSIdlI/6izjyGFDEAzIQTg+d/iTT4=
 github.com/ProtossGenius/pglang v0.0.0-20210122172654-0a16c92be126 h1:XKmlAwcsE6LlOLL7gpkliCPxD2kDtRrNbvl23SLLFu8=
 github.com/ProtossGenius/pglang v0.0.0-20210122172654-0a16c92be126/go.mod h1:thfuAzqVRRKHOJBVZsR3PxyaHJRHALGtMhcbS8zOK8M=
+github.com/ProtossGenius/pglang v0.0.0-20210123094118-aaa9f5b59f05 h1:1msoYDbtEOCDxaMsAdFInk4+O7R+UcGISvQAHnnuyqU=
+github.com/ProtossGenius/pglang v0.0.0-20210123094118-aaa9f5b59f05/go.mod h1:WR8HtBo5tgvqxVsv3dmK6xMBv4kj3kagWSKky8Qx2j4=
 github.com/ProtossGenius/smn-cpp v0.0.0-20200605081320-4de0f87e059d/go.mod h1:LoCLyGaS0GC9cOD5dcBV1ULkRHF5txwVUg4eepcxgeg=
 github.com/ProtossGenius/smnric v0.0.0-20210123085803-0a4f1aee2083 h1:pAmr/SeUGyoG9IRZraGzgMLIWDxeRnQlfFhcl6pFjMg=
 github.com/ProtossGenius/smnric v0.0.0-20210123085803-0a4f1aee2083/go.mod h1:VQd2oBm+My2cb4FSZeFp6mTuVcz87+lL+FRa0Po+I/s=
