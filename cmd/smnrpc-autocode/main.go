@@ -27,7 +27,7 @@ rem:
 
 	work do ..
 
-	(itf -> lang-itf) //call smn_goitf2lang
+	(itf -> lang-itf) // call smn_goitf2lang
 
 	itf -> proto.
 	itf -> rpc-code
@@ -59,7 +59,9 @@ message FPkg{
 }
 `
 
-//JSONConfigStr sample config.
+var RPCIgnoreSuffix = []string{"_pb", "_i"}
+
+// JSONConfigStr sample config.
 const JSONConfigStr = `{
     "src":"./",
     "itf_path":"./smnitf",
@@ -68,14 +70,14 @@ const JSONConfigStr = `{
     "module":"github.com/ProtossGenius/smntools"
 }`
 
-//AutoCodeCfg json.
+// AutoCodeCfg json.
 type AutoCodeCfg struct {
 	ItfPath   string            `json:"itf_path"   node:"go-interface path"`
 	Target    map[string]string `json:"target"     node:"target to output path."`
 	ProtoPath string            `json:"proto_path" node:"proto file path."`
 	Module    string            `json:"module"     node:"project's go-package."`
 	Src       string            `json:"src"        node:"code path, such as java is ./src/ "`
-	//language suit. not must .
+	// language suit. not must .
 }
 
 func checkerr(err error) {
@@ -102,7 +104,7 @@ func readCfg(cfg string) *AutoCodeCfg {
 }
 
 func printDoc() {
-	//use tag product doc.
+	// use tag product doc.
 	rt := reflect.TypeOf(AutoCodeCfg{})
 	numField := rt.NumField()
 
@@ -147,23 +149,39 @@ func autocode(cfg string) {
 	}
 
 	for path, list := range itfs {
-		//go interface to proto.
+		// go interface to proto.
 		err := itf2proto.WriteProto(c.ProtoPath, list)
 		checkerr(err)
 
 		for lang := range langMap {
-			//go interface to lang interface.
-			goitf2lang.WriteInterface(lang, c.Src+lang, list[0].Package, list)
+			itfOutPath := c.Src + lang + "/smn_itf"
+			if itfCfg, exist := c.Target[lang+"_i"]; exist {
+				itfOutPath = itfCfg
+			}
+			// go interface to lang interface.
+			goitf2lang.WriteInterface(lang, itfOutPath, list[0].Package, list)
 		}
 
 		fullPath, err := filepath.Abs(path)
 		checkerr(err)
 		pwdPath, err := filepath.Abs("./")
 		checkerr(err)
-		//get fullPkg
-		fullPkg := c.Module + strings.Replace(fullPath, pwdPath, "", -1)
-		//write RPC code
+		// get fullPkg
+		fullPkg := c.Module + strings.ReplaceAll(fullPath, pwdPath, "")
+		// write RPC code
 		for target, oPath := range c.Target {
+			ignore := false
+
+			for _, suffix := range RPCIgnoreSuffix {
+				if strings.HasSuffix(target, suffix) {
+					ignore = true
+				}
+			}
+
+			if ignore {
+				continue
+			}
+
 			for _, itf := range list {
 				err = itf2rpc.Write(target, oPath, c.Module, fullPkg, itf)
 				if err != nil {
@@ -174,11 +192,14 @@ func autocode(cfg string) {
 	}
 
 	errList := []string{}
-	//proto compile
+	// proto compile
 	for lang := range langMap {
-		err := proto_compile.Compile(c.ProtoPath, c.Src+lang+"/pb/", c.Module, lang)
+		pbOutPath := c.Src + lang + "/pb/"
+		if pbCfg, exist := c.Target[lang+"_pb"]; exist {
+			pbOutPath = pbCfg
+		}
 
-		if err != nil {
+		if err := proto_compile.Compile(c.ProtoPath, pbOutPath, c.Module, lang); err != nil {
 			errList = append(errList, fmt.Sprintf("\tWhen compile lang [%s], error is %s", lang, err.Error()))
 		}
 	}
@@ -189,10 +210,10 @@ func autocode(cfg string) {
 }
 
 func main() {
-	// flag var
+	//  flag var
 	var (
 		cfg     string
-		example bool //sample config path
+		example bool // sample config path
 		doc     bool
 	)
 

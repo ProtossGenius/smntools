@@ -1,7 +1,5 @@
 test: clean  c_smnrpc_autocode 
 	smnrpc-autocode -cfg ./datas/cfgs/testrpc.json
-	mv ./go/pb ./pb
-	rm -rf ./go
 	time -p go run ./test/smnrpc/test.go
 
 clean:
