@@ -138,7 +138,6 @@ func autocode(cfg string) {
 
 	itfs, err := smn_rpc_itf.GetItfListFromDir(c.ItfPath)
 	checkerr(err)
-
 	checkProtoPath(c.ProtoPath)
 
 	langMap := make(map[string]bool)
@@ -154,9 +153,9 @@ func autocode(cfg string) {
 		checkerr(err)
 
 		for lang := range langMap {
-			itfOutPath := c.Src + lang + "/smn_itf"
+			itfOutPath := c.Src + lang + "/smn_itf/"
 			if itfCfg, exist := c.Target[lang+"_i"]; exist {
-				itfOutPath = itfCfg
+				itfOutPath = itfCfg + "/"
 			}
 			// go interface to lang interface.
 			goitf2lang.WriteInterface(lang, itfOutPath, list[0].Package, list)
