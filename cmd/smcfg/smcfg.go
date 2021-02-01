@@ -92,6 +92,11 @@ func findFile(basePath, shellName string) string {
 		return forOs
 	}
 
+	forU := basePath + "/ubuntu." + shellName + ".sh"
+	if osv != "centos" && smn_file.IsFileExist(forU) {
+		return forU
+	}
+
 	return shellName + ".sh"
 }
 
