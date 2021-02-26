@@ -39,6 +39,7 @@ rem:
 const baseProto = `syntax = "proto3";
 option java_package = "pb";
 option java_outer_classname="smn_base";
+option go_package="%s;%s";
 package smn_base;
 
 message Call{
@@ -115,7 +116,7 @@ func printDoc() {
 	}
 }
 
-func checkProtoPath(p string) {
+func checkProtoPath(p, module string) {
 	if !smn_file.IsFileExist(p) {
 		err := os.MkdirAll(p, os.ModePerm)
 		checkerr(err)
@@ -126,7 +127,7 @@ func checkProtoPath(p string) {
 
 		checkerr(err)
 
-		_, err = of.WriteString(baseProto)
+		_, err = of.WriteString(fmt.Sprintf(baseProto, module+"/smn_base", "smn_base"))
 		checkerr(err)
 
 		checkerr(of.Close())
@@ -138,7 +139,7 @@ func autocode(cfg string) {
 
 	itfs, err := smn_rpc_itf.GetItfListFromDir(c.ItfPath)
 	checkerr(err)
-	checkProtoPath(c.ProtoPath)
+	checkProtoPath(c.ProtoPath, c.Module)
 
 	langMap := make(map[string]bool)
 
@@ -149,7 +150,7 @@ func autocode(cfg string) {
 
 	for path, list := range itfs {
 		// go interface to proto.
-		err := itf2proto.WriteProto(c.ProtoPath, list)
+		err := itf2proto.WriteProto(c.ProtoPath, c.Module, list)
 		checkerr(err)
 
 		for lang := range langMap {

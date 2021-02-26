@@ -5,7 +5,7 @@ go 1.14
 require (
 	github.com/ProtossGenius/SureMoonNet v0.0.0-20210125072611-ca7c15875a67
 	github.com/ProtossGenius/pglang v0.0.0-20210123103630-634c83b48505
-	github.com/ProtossGenius/smnric v0.0.0-20210126032758-123df32c7dd0
+	github.com/ProtossGenius/smnric v0.0.0-20210226030457-8a011f103582
 	github.com/golang/protobuf v1.4.2
 	github.com/json-iterator/go v1.1.9
 	google.golang.org/protobuf v1.25.0

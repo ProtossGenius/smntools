@@ -1,6 +1,7 @@
 syntax = "proto3";
 option java_package = "pb";
 option java_outer_classname="smn_base";
+option go_package="github.com/ProtossGenius/smntools/smn_base;smn_base";
 package smn_base;
 
 message Call{
