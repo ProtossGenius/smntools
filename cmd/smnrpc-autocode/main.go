@@ -122,16 +122,14 @@ func checkProtoPath(p, module string) {
 		checkerr(err)
 	}
 
-	if !smn_file.IsFileExist(p + "/smn_base.proto") {
-		of, err := smn_file.CreateNewFile(p + "/smn_base.proto")
+	of, err := smn_file.CreateNewFile(p + "/smn_base.proto")
 
-		checkerr(err)
+	checkerr(err)
 
-		_, err = of.WriteString(fmt.Sprintf(baseProto, module+"/smn_base", "smn_base"))
-		checkerr(err)
+	_, err = of.WriteString(fmt.Sprintf(baseProto, module+"/pb/smn_base", "smn_base"))
+	checkerr(err)
 
-		checkerr(of.Close())
-	}
+	checkerr(of.Close())
 }
 
 func autocode(cfg string) {
