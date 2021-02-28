@@ -1,6 +1,6 @@
 test: clean  c_smnrpc_autocode 
 	smnrpc-autocode -cfg ./datas/cfgs/testrpc.json
-	time -p go run ./test/smnrpc/test.go
+	go run ./test/smnrpc/test.go
 
 clean:
 	rm -rf ./pbr
@@ -21,10 +21,13 @@ c_gogopb: #change pb to google.golang ver.
 c_smake:
 	cd ./cmd/smake && go install 
 
+c_smgit:
+	cd ./cmd/smgit && go install
+
 c_smdcatalog:
 	cd ./cmd/smdcatalog && go install
 
-install: auto_code  c_smcfg  c_smnrpc_autocode c_smwget  c_gogopb c_smake c_smdcatalog 	
+install: auto_code  c_smcfg  c_smnrpc_autocode c_smwget  c_gogopb c_smake c_smdcatalog c_smgit
 	 smdcatalog 
 
 c_smcfg: # a config tool

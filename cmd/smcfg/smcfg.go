@@ -109,7 +109,7 @@ func do_install(cfgName string) error {
 		return fmt.Errorf("Err no such config %s", cfgName)
 	}
 	//check
-	err := dirCmd(dirPath, "sh", "check.sh")
+	err := dirCmd(dirPath, "sh", findFile(dirPath, "check"))
 	if err == nil {
 		return nil
 	}
