@@ -68,6 +68,7 @@ func RunSvr() {
 }
 
 func main() {
+	start := time.Now().UnixNano()
 	defer func() {
 		err := recover()
 		if err != nil {
@@ -94,4 +95,6 @@ func main() {
 	}
 
 	wg.Wait()
+
+	fmt.Println("time use = ", (time.Now().UnixNano()-start)/1e6, "ms")
 }
