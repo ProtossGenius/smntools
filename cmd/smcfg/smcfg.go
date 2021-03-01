@@ -59,6 +59,7 @@ func dirCmd(dir, e string, args ...string) error {
 	return cmd.Run()
 }
 
+// GetFromGit get config from git.
 func GetFromGit(target string) error {
 	//init config path
 	if target == "." {
@@ -180,6 +181,34 @@ func SmCfgNormal(act string) func(target string) error {
 	}
 }
 
+func createShell(path string, shellName string) error {
+	f, err := smn_file.CreateNewFile(path + "/" + shellName + ".sh")
+	defer f.Close()
+
+	return err
+}
+
+func SmCfgCreate(target string) error {
+	path := cfgPath + target
+	if smn_file.IsFileExist(path) {
+		return fmt.Errorf("target exist: %s", target)
+	}
+
+	if err := os.MkdirAll(path, os.ModeDir); err != nil {
+		return err
+	}
+
+	shellList := []string{"install", "check", "remove", "update", "status"}
+
+	for _, shellName := range shellList {
+		if err := createShell(path, shellName); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func registe(name, usage string) {
 	smn_flag.RegisterString(name, usage, SmCfgNormal(name))
 }
@@ -203,10 +232,12 @@ func main() {
 		GetFromGit)
 	smn_flag.RegisterString("install", "do install", SmCfgInstall)
 	smn_flag.RegisterString("update", "do update", SmUpdate)
+	smn_flag.RegisterString("create", "create new config_target", SmCfgCreate)
 	registe("remove", "do remvoe")
 	registe("status", "show status")
 	registe("check", "do check, is exist success")
 	registe("collect", "collect local config to update remote.")
+
 	flag.Parse()
 	smn_flag.Parse(flag.Args(), onErr)
 }

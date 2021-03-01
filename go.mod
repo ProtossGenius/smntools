@@ -8,6 +8,7 @@ require (
 	github.com/ProtossGenius/smnric v0.0.0-20210226030457-8a011f103582
 	github.com/golang/protobuf v1.4.2
 	github.com/json-iterator/go v1.1.9
+	google.golang.org/genproto v0.0.0-20210226172003-ab064af71705
 	google.golang.org/protobuf v1.25.0
 )
 
