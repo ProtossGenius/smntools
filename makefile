@@ -1,6 +1,6 @@
 test: clean  c_smnrpc_autocode 
 	smnrpc-autocode -cfg ./datas/cfgs/testrpc.json
-	sudo go run ./test/smnrpc/test.go
+	sudo env PATH="$(PATH)" go run ./test/smnrpc/test.go
 
 clean:
 	rm -rf ./pbr
