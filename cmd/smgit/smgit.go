@@ -12,7 +12,7 @@ import (
 
 /*
  *   command:
- *   pull push
+ *   pull push.
  */
 var (
 	Comment string
@@ -41,6 +41,7 @@ func (fmap FlagMap) Parse(key string) {
 		f()
 	}
 }
+
 func ec(name string, arg ...string) {
 	c := exec.Command(name, arg...)
 	c.Stdout = os.Stdout
@@ -48,6 +49,16 @@ func ec(name string, arg ...string) {
 	err := c.Run()
 	check(err)
 }
+
+func ecNoerr(name string, arg ...string) {
+	c := exec.Command(name, arg...)
+	c.Stdout = os.Stdout
+	c.Stderr = os.Stderr
+	if err := c.Run(); err != nil {
+		fmt.Println(err)
+	}
+}
+
 func ffPull() {
 	//git stash
 	fmt.Println("doing stash")
@@ -67,6 +78,7 @@ func ffPush() {
 
 	//make prebuild
 	fmt.Println("make prebuild")
+	ecNoerr("make", "install")
 
 	//make install
 	fmt.Println("make install")
