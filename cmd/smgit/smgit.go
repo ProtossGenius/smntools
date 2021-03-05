@@ -64,6 +64,10 @@ func ffPush() {
 	if Comment == "" {
 		panic(fmt.Errorf("no comment message"))
 	}
+
+	//make prebuild
+	fmt.Println("make prebuild")
+
 	//make install
 	fmt.Println("make install")
 	ec("make", "install")
@@ -101,6 +105,8 @@ func ffMf() {
 	}
 
 	write(`##Tail
+prebuild:
+
 debug:
 
 qrun:

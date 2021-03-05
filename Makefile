@@ -1,3 +1,5 @@
+prebuild:
+
 test: clean  c_smnrpc_autocode 
 	smnrpc-autocode -cfg ./datas/cfgs/testrpc.json
 	sudo env PATH="$(PATH)" go run ./test/smnrpc/test.go
