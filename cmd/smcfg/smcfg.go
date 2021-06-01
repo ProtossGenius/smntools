@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 
 	"github.com/ProtossGenius/SureMoonNet/basis/smn_err"
@@ -29,16 +30,23 @@ var (
 //loopRely   configName ==> is this config need to install
 var loopRely = map[string]bool{}
 
-var (
+const (
 	ErrCfgPathExist      string = "Error Config directory exist."
 	ErrLoopRely                 = "Error loop rely : [%s] and [%s] "
 	ErrNoCheckTarget            = "Error not found check target."
 	ErrNothingCanRemove         = "Error nothing can remove"
 	ErrNothingCanUpdate         = "Error nothing can update"
 	ErrNothingCanCollect        = "Error nothing can collect"
+	ErrNotSupportSystem         = "Error not support system Windows"
 )
 
 func issue() string {
+	if runtime.GOOS == "darwin" {
+		return "darwin"
+	}
+	if runtime.GOOS == "windows" {
+		panic(ErrNotSupportSystem)
+	}
 	if smn_file.IsFileExist("/etc/redhat-release") {
 		return "centos"
 	}
@@ -101,7 +109,7 @@ func findFile(basePath, shellName string) string {
 	return shellName + ".sh"
 }
 
-func do_install(cfgName string) error {
+func doInstall(cfgName string) error {
 	fmt.Println("installing ", cfgName, "......")
 	loopRely[cfgName] = true
 	defer func() { loopRely[cfgName] = false }()
@@ -151,7 +159,7 @@ func do_install(cfgName string) error {
 			if loopRely[line] {
 				return fmt.Errorf(ErrLoopRely, cfgName, line)
 			}
-			err = do_install(line)
+			err = doInstall(line)
 			if err != nil {
 				return err
 			}
@@ -162,14 +170,14 @@ func do_install(cfgName string) error {
 }
 
 func SmCfgInstall(target string) error {
-	return do_install(target)
+	return doInstall(target)
 }
 
 func SmUpdate(target string) error {
 	fmt.Println("updateing ", target, "......")
 	err := dirCmd(cfgPath+target, "sh", "check.sh")
 	if err != nil {
-		return do_install(target)
+		return doInstall(target)
 	}
 
 	return dirCmd(cfgPath+target, "sh", findFile(cfgPath+target, "update"))
