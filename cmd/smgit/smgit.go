@@ -78,7 +78,7 @@ func ffPush() {
 
 	//make prebuild
 	fmt.Println("make prebuild")
-	ecNoerr("make", "install")
+	ecNoerr("make", "prebuild")
 
 	//make install
 	fmt.Println("make install")
