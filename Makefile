@@ -6,10 +6,7 @@ test: clean  c_smnrpc_autocode
 
 clean:
 	rm -rf ./pbr
-	rm -rf ./rpc_nitf
-	rm -f ./datas/proto/*.proto
 	rm -rf ./datas/proto/temp
-	rm -rf ./pb
 
 c_smnrpc_autocode: #SureMoonRPC code tool.
 	cd ./cmd/smnrpc-autocode && go install

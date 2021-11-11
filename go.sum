@@ -9,6 +9,8 @@ github.com/ProtossGenius/smnric v0.0.0-20211110152136-275ea89b0321 h1:sE8W/jUBig
 github.com/ProtossGenius/smnric v0.0.0-20211110152136-275ea89b0321/go.mod h1:BVnLz5MWaBV99ysFSUiFYVKSo5paEEEBZofygG1X5Aw=
 github.com/ProtossGenius/smnric v0.0.0-20211110155120-f3c24b975430 h1:+m/aMsvFF3CDw9m6LheJvoh+CA9MaKlllw5F1wRse5c=
 github.com/ProtossGenius/smnric v0.0.0-20211110155120-f3c24b975430/go.mod h1:BVnLz5MWaBV99ysFSUiFYVKSo5paEEEBZofygG1X5Aw=
+github.com/ProtossGenius/smnric v0.0.0-20211111160446-e5741722df43 h1:3btN0Ash7MYrLDVDe/sZkV7IL16V6W38BVQ37RDIv40=
+github.com/ProtossGenius/smnric v0.0.0-20211111160446-e5741722df43/go.mod h1:BVnLz5MWaBV99ysFSUiFYVKSo5paEEEBZofygG1X5Aw=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
