@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/ProtossGenius/smnric/net_libs/smn_rpc"
-	"github.com/ProtossGenius/smntools/rpc_nitf/cltrpc/clt_rpc_smntitf"
-	"github.com/ProtossGenius/smntools/rpc_nitf/svrrpc/svr_rpc_smntitf"
+	"github.com/ProtossGenius/smntools/rpc_nitf/cltrpc/clt_rpc_smnitf"
+	"github.com/ProtossGenius/smntools/rpc_nitf/svrrpc/svr_rpc_smnitf"
 	"github.com/ProtossGenius/smntools/smnutils"
 )
 
@@ -38,7 +38,7 @@ func main() {
 
 	var wg sync.WaitGroup
 
-	_, err := smnutils.RunRICExample(900, 1000, svr_rpc_smntitf.NewSvrRpcHelloItf(&HelloStruct{}))
+	_, err := smnutils.RunRICExample(900, 1000, svr_rpc_smnitf.NewSvrRpcHelloItf(&HelloStruct{}))
 	check(err)
 
 	time.Sleep(1 * time.Second)
@@ -46,7 +46,7 @@ func main() {
 	conn, err := net.Dial("tcp", "127.0.0.1:900")
 	check(err)
 
-	client := clt_rpc_smntitf.NewCltRpcHelloItf(smn_rpc.NewMessageAdapter(conn), 1000)
+	client := clt_rpc_smnitf.NewCltRpcHelloItf(smn_rpc.NewMessageAdapter(conn), 1000)
 
 	for i := 0; i < 10000; i++ {
 		wg.Add(1)
