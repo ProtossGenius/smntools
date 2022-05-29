@@ -26,7 +26,10 @@ c_smgit:
 c_smdcatalog:
 	cd ./cmd/smdcatalog && go install
 
-install: auto_code  c_smcfg  c_smnrpc_autocode c_smwget  c_gogopb c_smake c_smdcatalog c_smgit
+c_smkdir:
+	cd ./cmd/smkdir && go install 
+
+install: auto_code  c_smcfg  c_smnrpc_autocode c_smwget  c_gogopb c_smake c_smdcatalog c_smgit c_smkdir
 	 smdcatalog 
 
 c_smcfg: # a config tool
