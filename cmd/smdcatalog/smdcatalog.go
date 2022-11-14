@@ -106,11 +106,24 @@ func calcCatalog(path string, dirs []os.FileInfo) []string {
 	return catalogs
 }
 
+func isHide(path string) bool {
+	list := strings.Split(path, smn_file.PathSep)
+	if strings.HasPrefix(list[len(list)-1], ".") {
+		return true
+	}
+
+	return false
+}
+
 func main() {
 	dir := flag.String("dir", ".", "the dir path.")
 	flag.Parse()
 
 	err := smn_file.ListDirs(*dir, func(path string) {
+		if isHide(path) {
+			return
+		}
+
 		readmePath := path + smn_file.PathSep + ConstReadmdFileName
 		if !smn_file.IsFileExist(readmePath) {
 			return
