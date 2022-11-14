@@ -106,27 +106,18 @@ func calcCatalog(path string, dirs []os.FileInfo) []string {
 	return catalogs
 }
 
-func isHide(path string) bool {
-	list := strings.Split(path, smn_file.PathSep)
-	if strings.HasPrefix(list[len(list)-1], ".") {
-		return true
-	}
-
-	return false
-}
-
 func main() {
 	dir := flag.String("dir", ".", "the dir path.")
 	flag.Parse()
 
-	err := smn_file.ListDirs(*dir, func(path string) {
-		if isHide(path) {
-			return
+	_, err := smn_file.DeepTraversalDir(*dir, func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
+		if strings.HasPrefix(info.Name(), ".") {
+			return smn_file.FILE_DO_FUNC_RESULT_NO_DEAL
 		}
 
 		readmePath := path + smn_file.PathSep + ConstReadmdFileName
 		if !smn_file.IsFileExist(readmePath) {
-			return
+			return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
 		}
 
 		readme := readReadme(readmePath)
@@ -141,6 +132,8 @@ func main() {
 		defer f.Close()
 		_, err = f.WriteString(strings.Join(readme, "\n"))
 		check(err)
+
+		return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
 	})
 	check(err)
 }

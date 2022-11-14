@@ -9,6 +9,7 @@
 
 # SubCatalog
 
+* [\<dir>cfgs -> ./datas/cfgs](./cfgs/README.md)
 * [\<dir>proto -> ./datas/proto](./proto/README.md)
 ---
 [<<< upper page](../README.md)
