@@ -36,7 +36,7 @@ func readReadme(path string) []string {
 	for _, line := range lines {
 		res = append(res, line)
 
-		if line == ConstCatalog {
+		if strings.TrimSpace(line) == ConstCatalog {
 			haveCatalog = true
 
 			break
@@ -111,13 +111,19 @@ func main() {
 	flag.Parse()
 
 	_, err := smn_file.DeepTraversalDir(*dir, func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
+		if !info.IsDir() {
+			return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
+		}
 		if strings.HasPrefix(info.Name(), ".") {
 			return smn_file.FILE_DO_FUNC_RESULT_NO_DEAL
 		}
 
 		readmePath := path + smn_file.PathSep + ConstReadmdFileName
 		if !smn_file.IsFileExist(readmePath) {
-			return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
+			if f, err := smn_file.CreateNewFile(readmePath); err == nil {
+				f.WriteString("#" + path)
+				f.Close()
+			}
 		}
 
 		readme := readReadme(readmePath)
