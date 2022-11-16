@@ -109,16 +109,18 @@ func calcCatalog(path string, dirs []os.FileInfo) []string {
 func main() {
 	dir := flag.String("dir", ".", "the dir path.")
 	flag.Parse()
-
-	_, err := smn_file.DeepTraversalDir(*dir, func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
+	_, err := smn_file.DeepTraversalDirWithSelf(*dir, func(path string, info os.FileInfo) smn_file.FileDoFuncResult {
+		fmt.Println("path = ", path)
 		if !info.IsDir() {
 			return smn_file.FILE_DO_FUNC_RESULT_DEFAULT
 		}
-		if strings.HasPrefix(info.Name(), ".") {
+
+		if strings.HasPrefix(info.Name(), ".") && info.Name() != "." {
 			return smn_file.FILE_DO_FUNC_RESULT_NO_DEAL
 		}
 
 		readmePath := path + smn_file.PathSep + ConstReadmdFileName
+		fmt.Println("readmePath ", readmePath)
 		if !smn_file.IsFileExist(readmePath) {
 			if f, err := smn_file.CreateNewFile(readmePath); err == nil {
 				f.WriteString("#" + path)
