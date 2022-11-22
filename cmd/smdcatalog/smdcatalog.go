@@ -123,7 +123,7 @@ func main() {
 		fmt.Println("readmePath ", readmePath)
 		if !smn_file.IsFileExist(readmePath) {
 			if f, err := smn_file.CreateNewFile(readmePath); err == nil {
-				f.WriteString("#" + path)
+				f.WriteString("# " + path)
 				f.Close()
 			}
 		}
