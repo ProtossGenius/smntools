@@ -7,10 +7,14 @@ github.com/ProtossGenius/SureMoonNet v0.0.0-20220529075358-77cbf2f552ca h1:PJHpx
 github.com/ProtossGenius/SureMoonNet v0.0.0-20220529075358-77cbf2f552ca/go.mod h1:FaNbCd4GqALA6p8dBEcP+qmzz2YUblQitcbkJayXxrI=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20221116151636-8887d1c67c49 h1:NxgH6mKF6sVcinitSRmRUR3n1noLJQDm8bAixgKbdVU=
 github.com/ProtossGenius/SureMoonNet v0.0.0-20221116151636-8887d1c67c49/go.mod h1:FaNbCd4GqALA6p8dBEcP+qmzz2YUblQitcbkJayXxrI=
+github.com/ProtossGenius/SureMoonNet v1.0.0 h1:vLTdxGEE2uAHhFSem32eeCbH2Pz2zI+zL9jFitxE4B4=
+github.com/ProtossGenius/SureMoonNet v1.0.0/go.mod h1:FaNbCd4GqALA6p8dBEcP+qmzz2YUblQitcbkJayXxrI=
 github.com/ProtossGenius/pglang v0.0.0-20210123103630-634c83b48505 h1:/qlg7P/o3USU0nQz+B4G6OW9sw7NN3iZfT8YBEaIT/E=
 github.com/ProtossGenius/pglang v0.0.0-20210123103630-634c83b48505/go.mod h1:WtOyLHSQkb+j+SHJg8L/zjNubh0vV1/ZkxfFFFzHHOc=
+github.com/ProtossGenius/pglang v1.0.0/go.mod h1:WtOyLHSQkb+j+SHJg8L/zjNubh0vV1/ZkxfFFFzHHOc=
 github.com/ProtossGenius/smnric v0.0.0-20211111160446-e5741722df43 h1:3btN0Ash7MYrLDVDe/sZkV7IL16V6W38BVQ37RDIv40=
 github.com/ProtossGenius/smnric v0.0.0-20211111160446-e5741722df43/go.mod h1:BVnLz5MWaBV99ysFSUiFYVKSo5paEEEBZofygG1X5Aw=
+github.com/ProtossGenius/smnric v1.0.0/go.mod h1:4D/i5IaSNb84MOf5+1c1ckQqtWFHbGcqxjO1OZQ6m6U=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
